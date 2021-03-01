@@ -1,1 +1,1 @@
-command CPHListen lua require 'cphelper'.listen()
+command CPHReceive lua require 'receive'.pass()
