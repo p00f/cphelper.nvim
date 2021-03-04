@@ -1,26 +1,37 @@
-local contest_dir = "/home/p00f/contests" -- TODO 1) get os homedir
-local lfs = require "lfs"                 --      2) allow user to set contest_dir
+local p = require "plenary.path"
+local contests_dir = p.new(vim.loop.os_homedir() .. "/contests")
+-- if vim.api.nvim_get_var("cphdir") ~= nil then
+--  contests_dir = p.new(vim.api.nvim_get_var("cphdir"))
+-- end
 
 local function sanitize(s)
   local unwanted = {"-", " ", "#", "%."}
   for _, char in pairs(unwanted) do
-    local occurrences = string.find(s, char)
-    while occurrences do
-      s = string.sub(s, 1, occurrences - 1) .. string.sub(s, occurrences + 1)
-      occurrences = string.find(s, char)
+    local pos = string.find(s, char)
+    while pos do
+      s = string.sub(s, 1, pos - 1) .. string.sub(s, pos + 1)
+      pos = string.find(s, char)
     end
   end
   return s
 end
 
 local M = {}
-function M.prepare_solution(problem, group)
-  print(problem .. group)
-  local sep_pos = string.find(group, " -")
-  local success, message, code = lfs.mkdir(contest_dir) -- TODO add error handling here
+
+function M.prepare_folders(problem, group)
+  -- group = judge + contest
+  local sep_pos = string.find(group, "% %-")
   local judge = sanitize(string.sub(group, 1, sep_pos))
-  lfs.mkdir(contest_dir .. "/" .. judge)                -- and here
-  print("Prepared solution")
+  local contest = sanitize(string.sub(group, sep_pos + 1))
+
+  problem = sanitize(problem)
+  local problem_dir = contests_dir:joinpath(judge, contest, problem)
+  contests_dir:mkdir()
+  contests_dir:joinpath(judge):mkdir()
+  contests_dir:joinpath(judge, contest):mkdir()
+  problem_dir:mkdir()
+  return problem_dir()
 end
-function M.prepare_tests(json) print("Prepared tests") end
+
+function M.prepare_files(problem_dir, json) end
 return M
