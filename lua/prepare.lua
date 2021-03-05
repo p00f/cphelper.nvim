@@ -25,8 +25,8 @@ end
 
 function M.prepare_files(problem_dir, json)
   for i, test in pairs(json.tests) do
-    problem_dir:joinpath("testinput" .. i):write(test["input"], "w")
-    problem_dir:joinpath("testoutput" .. i):write(test["output"], "w")
+    problem_dir:joinpath("input" .. i):write(test["input"], "w")
+    problem_dir:joinpath("output" .. i):write(test["output"], "w")
   end
   print("Wrote tests")
   for _, lang in pairs(langs) do
