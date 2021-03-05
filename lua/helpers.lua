@@ -20,4 +20,5 @@ function M.vglobal_or_default(var, default)
     return default
   end
 end
+
 return M
