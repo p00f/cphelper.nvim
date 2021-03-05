@@ -1,6 +1,8 @@
 local p = require "plenary.path"
 local h = require "helpers"
-local contests_dir = p.new(vim.loop.os_homedir()):joinpath("contests") -- TODO allow user to set this
+local contests_dir = p.new(h.vglobal_or_default("cphdir",
+                                                (vim.loop.os_homedir() ..
+                                                    p.path.sep .. "contests")))
 local langs = {"c", "cpp", "py"}
 local preferred_lang = h.vglobal_or_default("cphlang", "cpp")
 
