@@ -11,7 +11,7 @@ function M.pass()
     onstream = function(_, stream) -- first arg is server
       local json = vim.fn.json_decode(stream:get_body_as_string())
       local problem_dir = prepare.prepare_folders(json.name, json.group)
-      prepare.prepare_files(problem_dir, json)
+      prepare.prepare_files(problem_dir, json.tests)
       local header = headers:new()
       header:append(":status", "201")
       stream:write_headers(header, true)

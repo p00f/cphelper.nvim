@@ -23,8 +23,8 @@ function M.prepare_folders(problem, group)
   return problem_dir
 end
 
-function M.prepare_files(problem_dir, json)
-  for i, test in pairs(json.tests) do
+function M.prepare_files(problem_dir, tests)
+  for i, test in pairs(tests) do
     problem_dir:joinpath("input" .. i):write(test["input"], "w")
     problem_dir:joinpath("output" .. i):write(test["output"], "w")
   end
