@@ -18,6 +18,3 @@ A plugin for automating tasks in competitive programming like downloading testca
 - `:CphRetest [numbers]` to test the same binary without recompiling.
 - `:CphEdit [number]` to edit/add a testcase.
 - `:CphDelete [numbers]` to delete testcases.
-
-## Known Bugs
-`:CphTest/Retest` have to be entered a number of times to get the full output. (There's an error the first couple of times)
