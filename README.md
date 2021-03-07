@@ -2,9 +2,9 @@
 A plugin for automating tasks in competitive programming like downloading testcases, compiling and testing. Supports C, C++ and Python.
 
 ## Requirements
-- competitive-companion browser extension
-- Plugin: `nvim-lua/plenary.nvim` (Install using your plugin manager)
-- Luarocks: `http`.
+- [competitive-companion](https://github.com/jmerle/competitive-companion) browser extension
+- Plugin: [`nvim-lua/plenary.nvim`](https://github.com/nvim-lua/plenary.nvim/) (Install using your plugin manager)
+- Luarocks: [`http`](https://daurnimator.github.io/lua-http/).
 	- If you use packer.nvim to manage plugins you can
 	```lua
 	use {'p00f/cphelper.nvim', rocks = 'http'}
