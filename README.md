@@ -1,5 +1,5 @@
 # cphelper.nvim
-A plugin for automating tasks in competitive programming like downloading testcases, compiling and testing. Supports C, C++ and Python.
+A plugin for automating tasks in competitive programming like downloading testcases, compiling and testing. Supports C, C++ and Python. Does not suppport Windows.
 
 ## Requirements
 - [competitive-companion](https://github.com/jmerle/competitive-companion) browser extension
@@ -20,4 +20,4 @@ A plugin for automating tasks in competitive programming like downloading testca
 - `:CphDelete [numbers]` to delete testcases.
 
 ## Known bugs
-Runtime errors shown as empty output and wrong answer - I don't know of a cross-platform way to get both stderr and stdout. `io.popen()` gives only stdout.
+Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
