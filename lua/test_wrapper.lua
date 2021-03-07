@@ -1,4 +1,5 @@
 local s = require "plenary.scandir"
+local f = require "plenary.filetype"
 local h = require "helpers"
 local run = require "run_tests"
 
@@ -18,7 +19,7 @@ local M = {}
 function M.wrapper(...)
   local args = {...}
   local cwd = vim.fn.getcwd()
-  local ft = vim.api.nvim_buf_get_var("ft")
+  local ft = f.detect(vim.api.nvim_buf_get_name(0))
   compile(ft)
   if #args == 0 then
     for _, input_file in ipairs(s.scan_dir(cwd, {
@@ -36,7 +37,7 @@ end
 function M.retest_wrapper(...)
   local args = {...}
   local cwd = vim.fn.getcwd()
-  local ft = vim.api.nvim_buf_get_var("ft")
+  local ft = f.detect(vim.api.nvim_buf_get_name(0))
   if #args == 0 then
     for _, input_file in ipairs(s.scan_dir(cwd, {
       search_pattern = "input%d+",
