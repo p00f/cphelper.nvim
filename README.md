@@ -18,3 +18,6 @@ A plugin for automating tasks in competitive programming like downloading testca
 - `:CphRetest [numbers]` to test the same binary without recompiling.
 - `:CphEdit [number]` to edit/add a testcase.
 - `:CphDelete [numbers]` to delete testcases.
+
+## Known bugs
+Runtime errors shown as empty output and wrong answer - I don't know of a cross-platform way to get both stderr and stdout. `io.popen()` gives only stdout.
