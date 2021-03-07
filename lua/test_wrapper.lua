@@ -41,13 +41,18 @@ function M.wrapper(...)
         search_pattern = "input%d+",
         depth = 1
       })) do
-        vim.list_extend(results, run.run_test(
-                            string.sub(input_file, string.len(cwd) -
-                                           string.len(input_file) + 1), cmd(ft)))
+        local result, case_no = run.run_test(
+                                    string.sub(input_file, string.len(cwd) -
+                                                   string.len(input_file) + 1),
+                                    cmd(ft))
+        vim.list_extend(results, result)
+        vim.list_extend(results, h.read_lines("test_output" .. case_no))
       end
     else
       for _, case in ipairs(args) do
-        vim.list_extend(results, run.run_test("input" .. case, cmd(ft)))
+        local result, case_no = run.run_test("input" .. case, cmd(ft))
+        vim.list_extend(results, result)
+        vim.list_extend(results, h.read_lines("test_output" .. case_no))
       end
     end
     local win_info = fw.centered()
@@ -70,13 +75,18 @@ function M.retest_wrapper(...)
       search_pattern = "input%d+",
       depth = 1
     })) do
-      vim.list_extend(results, run.run_test(
-                          string.sub(input_file, string.len(cwd) -
-                                         string.len(input_file) + 1), cmd(ft)))
+      local result, case_no = run.run_test(
+                                  string.sub(input_file, string.len(cwd) -
+                                                 string.len(input_file) + 1),
+                                  cmd(ft))
+      vim.list_extend(results, result)
+      vim.list_extend(results, h.read_lines("test_output" .. case_no))
     end
   else
     for _, case in ipairs(args) do
-      vim.list_extend(results, run.run_test("input" .. case, cmd(ft)))
+      local result, case_no = run.run_test("input" .. case, cmd(ft))
+      vim.list_extend(results, result)
+      vim.list_extend(results, h.read_lines("test_output" .. case_no))
     end
   end
   local win_info = fw.centered()
