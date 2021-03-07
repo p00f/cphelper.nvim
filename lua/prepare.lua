@@ -15,11 +15,13 @@ function M.prepare_folders(problem, group)
   local contest = h.sanitize(string.sub(group, sep_pos + 1))
 
   problem = h.sanitize(problem)
+  local judge_dir = contests_dir:joinpath(judge)
+  local contest_dir = judge_dir:joinpath(contest)
   local problem_dir = contests_dir:joinpath(judge, contest, problem)
-  contests_dir:mkdir()
-  contests_dir:joinpath(judge):mkdir()
-  contests_dir:joinpath(judge, contest):mkdir()
-  problem_dir:mkdir()
+  if (not contests_dir:exists()) then contests_dir:mkdir() end
+  if (not judge_dir:exists()) then judge_dir:mkdir() end
+  if (not contest_dir:exists()) then contest_dir:mkdir() end
+  if (not problem_dir:exists()) then problem_dir:mkdir() end
   return problem_dir
 end
 
