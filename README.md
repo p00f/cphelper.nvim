@@ -18,6 +18,11 @@ A plugin for automating tasks in competitive programming like downloading testca
 - `:CphRetest [numbers]` to test the same binary without recompiling.
 - `:CphEdit [number]` to edit/add a testcase.
 - `:CphDelete [numbers]` to delete testcases.
-
+## Prefs
+- `g:cphdir` : The directory in which contests are stored (default `~/contests`)
+- `g:cphlang` : Preferred language for the first solution file opened. You can open another `solution.language` file for a particular problem using `:e` and that file will be used.
+- `g:c_compile_command` : Command for compiling C files (default `gcc solution.c -o c.out`). The input file must be `solution.c` and the output file must be `c.out`, this pref is  only for compile flags.
+- `g:cpp_compile_command`: Command for compiling C++ files. See above.
 ## Known bugs
-Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
+- Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
+- Compilation errors mess up messages area.
