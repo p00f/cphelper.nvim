@@ -34,17 +34,19 @@ end
 local function display(ac, cases, results)
   local header = "RESULTS: " .. ac .. "/" .. cases .. " AC"
   if ac == cases then header = header .. " 🎉🎉" end
-  local win_info = fw.centered_with_top_win({header})
-  local bufnr, win_id = win_info.bufnr, win_info.win_id
+  local bufnr = fw.centered_with_top_win({header}).bufnr
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
   vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
   vim.api.nvim_buf_set_option(bufnr, 'filetype', 'Results')
-  vim.fn.matchadd("DiffAdd", "Status: AC")
-  vim.fn.matchadd("Error", "Status: WA")
-  vim.fn.matchadd("DiffChange", "Case #\\d\\+")
-  vim.fn.matchadd("Underlined", "Input:")
-  vim.fn.matchadd("Underlined", "Expected output:")
-  vim.fn.matchadd("Underlined", "Received output:")
+  local highlights = {
+    ["Status: AC"] = "DiffAdd",
+    ["Status: WA"] = "Error",
+    ["Case #\\d\\+"] = "DiffChange",
+    ["Input:"] = "Underlined",
+    ["Expected output:"] = "Underlined",
+    ["Received output:"] = "Underlined"
+  }
+  for match, group in pairs(highlights) do vim.fn.matchadd(group, match) end
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<esc>', '<cmd>bd<CR>',
                               {noremap = true})
 end
@@ -79,7 +81,7 @@ function M.wrapper(...)
         cases = cases + 1
       end
     end
-  display(ac, cases, results)
+    display(ac, cases, results)
   else
     vim.api.nvim_err_writeln("Compilation error")
   end
