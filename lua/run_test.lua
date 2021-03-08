@@ -4,6 +4,7 @@ local M = {}
 
 function M.run_test(case, cmd)
   local case_no = string.sub(case, 6)
+  local status = 0
   local result = {"Case #" .. case_no}
   cmd = cmd .. " <" .. case
   local f = assert(io.popen(cmd, 'r'))
@@ -23,6 +24,7 @@ function M.run_test(case, cmd)
     vim.list_extend(result, output_arr)
     if (s == exp_out_string) then
       vim.list_extend(result, {"Status: AC"})
+      status = 1
     else
       vim.list_extend(result, {"Status: WA"})
     end
@@ -33,6 +35,6 @@ function M.run_test(case, cmd)
   if vim.fn.exists("validate") then
     result = h.pad(result, {pad_left = 1, pad_top = 1})
   end
-  return result
+  return result, status
 end
 return M

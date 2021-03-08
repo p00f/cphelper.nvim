@@ -31,12 +31,31 @@ local function cmd(ft)
   end
 end
 
+local function display(ac, cases, results)
+  local header = "RESULTS: " .. ac .. "/" .. cases .. " AC"
+  if ac == cases then header = header .. " 🎉🎉" end
+  local win_info = fw.centered_with_top_win({header})
+  local bufnr, win_id = win_info.bufnr, win_info.win_id
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
+  vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+  vim.api.nvim_buf_set_option(bufnr, 'filetype', 'Results')
+  vim.fn.matchadd("DiffAdd", "Status: AC")
+  vim.fn.matchadd("Error", "Status: WA")
+  vim.fn.matchadd("DiffChange", "Case #\\d\\+")
+  vim.fn.matchadd("Underlined", "Input:")
+  vim.fn.matchadd("Underlined", "Expected output:")
+  vim.fn.matchadd("Underlined", "Received output:")
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<esc>', '<cmd>bd<CR>',
+                              {noremap = true})
+end
+
 local M = {}
 
 function M.wrapper(...)
   local args = {...}
   local cwd = vim.fn.getcwd()
   local ft = f.detect(vim.api.nvim_buf_get_name(0))
+  local ac, cases = 0, 0
   local results = {}
   if compile(ft) == 0 then
     if #args == 0 then
@@ -44,22 +63,23 @@ function M.wrapper(...)
         search_pattern = "input%d+",
         depth = 1
       })) do
-        local result = run.run_test(string.sub(input_file, string.len(cwd) -
-                                                   string.len(input_file) + 1),
-                                    cmd(ft))
+        local result, status = run.run_test(
+                                   string.sub(input_file, string.len(cwd) -
+                                                  string.len(input_file) + 1),
+                                   cmd(ft))
         vim.list_extend(results, result)
+        ac = ac + status
+        cases = cases + 1
       end
     else
       for _, case in ipairs(args) do
-        local result = run.run_test("input" .. case, cmd(ft))
+        local result, status = run.run_test("input" .. case, cmd(ft))
         vim.list_extend(results, result)
+        ac = ac + status
+        cases = cases + 1
       end
     end
-    local win_info = fw.centered()
-    local bufnr, win_id = win_info.bufnr, win_info.win_id
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
-    vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
-    vim.api.nvim_buf_set_option(bufnr, 'filetype', 'Results')
+  display(ac, cases, results)
   else
     vim.api.nvim_err_writeln("Compilation error")
   end
@@ -70,27 +90,29 @@ function M.retest_wrapper(...)
   local cwd = vim.fn.getcwd()
   local ft = f.detect(vim.api.nvim_buf_get_name(0))
   local results = {}
+  local ac, cases = 0, 0
   if #args == 0 then
     for _, input_file in ipairs(s.scan_dir(cwd, {
       search_pattern = "input%d+",
       depth = 1
     })) do
-      local result = run.run_test(string.sub(input_file, string.len(cwd) -
-                                                 string.len(input_file) + 1),
-                                  cmd(ft))
+      local result, status = run.run_test(
+                                 string.sub(input_file, string.len(cwd) -
+                                                string.len(input_file) + 1),
+                                 cmd(ft))
       vim.list_extend(results, result)
+      ac = ac + status
+      cases = cases + 1
     end
   else
     for _, case in ipairs(args) do
-      local result = run.run_test("input" .. case, cmd(ft))
+      local result, status = run.run_test("input" .. case, cmd(ft))
       vim.list_extend(results, result)
+      ac = ac + status
+      cases = cases + 1
     end
   end
-  local win_info = fw.centered_with_top_win({"RESULTS"})
-  local bufnr, win_id = win_info.bufnr, win_info.win_id
-  vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
-  vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
-  vim.api.nvim_buf_set_option(bufnr, 'filetype', 'Results')
+  display(ac, cases, results)
 end
 
 return M
