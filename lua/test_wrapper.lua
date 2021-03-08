@@ -3,13 +3,16 @@ local f = require "plenary.filetype"
 local h = require "helpers"
 local run = require "run_test"
 local fw = require "plenary.window.float"
+local p = require "plenary.path"
 
 local function compile(ft)
   local exit_status = 0
   if ft == 'c' then
+    p.new(vim.fn.getcwd() .. p.path.sep .. "c.out"):rm()
     exit_status = os.execute(h.vglobal_or_default("cpp_compile_command",
                                                   "gcc solution.c -o c.out"))
   elseif ft == 'cpp' then
+    p.new(vim.fn.getcwd() .. p.path.sep .. "cpp.out"):rm()
     exit_status = os.execute(h.vglobal_or_default("c_compile_command",
                                                   "g++ solution.cpp -o cpp.out"))
   else
