@@ -58,6 +58,8 @@ Contests directory (g:cphdir)
             ├── solution.cpp
             └── solution.py
 ```
+## Screenshot
+[<img src="https://raw.githubusercontent.com/p00f/cphelper.nvim/main/screenshot.png" />]
 ## Known bugs
 - Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
 - Compilation errors mess up messages area. Scroll there to clean it up.
