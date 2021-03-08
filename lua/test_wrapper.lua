@@ -86,7 +86,7 @@ function M.retest_wrapper(...)
       vim.list_extend(results, result)
     end
   end
-  local win_info = fw.centered()
+  local win_info = fw.centered_with_top_win({"RESULTS"})
   local bufnr, win_id = win_info.bufnr, win_info.win_id
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
   vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)

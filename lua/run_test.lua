@@ -11,7 +11,8 @@ function M.run_test(case, cmd)
   local rc = {f:close()}
   local input_arr = h.read_lines(case)
   local exp_out_arr = h.read_lines("output" .. case_no)
-  local exp_out_string = p.new(vim.fn.getcwd() .. p.path.sep .. "output" .. case_no):read()
+  local exp_out_string = p.new(vim.fn.getcwd() .. p.path.sep .. "output" ..
+                                   case_no):read()
   local output_arr = h.split_lines(s)
   vim.list_extend(result, {"Input:"})
   vim.list_extend(result, input_arr)
@@ -28,6 +29,9 @@ function M.run_test(case, cmd)
   else
     vim.list_extend(result, {"Error:"})
     vim.list_extend(result, output_arr)
+  end
+  if vim.fn.exists("validate") then
+    result = h.pad(result, {pad_left = 1, pad_top = 1})
   end
   return result
 end
