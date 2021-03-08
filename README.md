@@ -25,4 +25,4 @@ A plugin for automating tasks in competitive programming like downloading testca
 - `g:cpp_compile_command`: Command for compiling C++ files. See above.
 ## Known bugs
 - Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
-- Compilation errors mess up messages area.
+- Compilation errors mess up messages area. Scroll there to clean it up.
