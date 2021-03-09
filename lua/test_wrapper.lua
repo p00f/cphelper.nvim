@@ -10,11 +10,11 @@ local function compile(ft)
   if ft == 'c' then
     p.new(vim.fn.getcwd() .. p.path.sep .. "c.out"):rm()
     exit_status = os.execute(h.vglobal_or_default("cpp_compile_command",
-                                                  "gcc solution.c -o c.out"))
+                                                  "gcc solution.c -o c.out &> ce.txt"))
   elseif ft == 'cpp' then
     p.new(vim.fn.getcwd() .. p.path.sep .. "cpp.out"):rm()
     exit_status = os.execute(h.vglobal_or_default("c_compile_command",
-                                                  "g++ solution.cpp -o cpp.out"))
+                                                  "g++ solution.cpp -o cpp.out &> ce.txt"))
   else
   end
   return exit_status
@@ -83,7 +83,9 @@ function M.wrapper(...)
     end
     display(ac, cases, results)
   else
-    vim.api.nvim_err_writeln("Compilation error")
+    local ce_path = p.new(cwd):joinpath("ce.txt")
+    vim.api.nvim_err_writeln("Compilation error" .. ce_path:read())
+    ce_path:rm()
   end
 end
 
