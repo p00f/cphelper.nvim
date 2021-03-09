@@ -21,16 +21,6 @@ function M.vglobal_or_default(var, default)
     end
 end
 
-function M.read_string(path)
-    local file = io.open(path)
-    if not file then
-        return nil
-    end
-    local content = file:read("*a")
-    file:close()
-    return content
-end
-
 function M.read_lines(path)
     local lines = {}
     for line in io.lines(path) do
