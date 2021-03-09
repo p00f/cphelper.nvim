@@ -21,8 +21,8 @@ A plugin for automating tasks in competitive programming like downloading testca
 ## Prefs
 - `g:cphdir` : The directory in which contests are stored (default `~/contests`) (Specify **absolute path**)
 - `g:cphlang` : Preferred language for the first solution file opened. You can open another `solution.language` file for a particular problem using `:e` and that file will be used.
-- `g:c_compile_command` : Command for compiling C files (default `gcc solution.c -o c.out`). The input file must be `solution.c` and the output file must be `c.out`, this pref is  only for compile flags.
-- `g:cpp_compile_command`: Command for compiling C++ files. See above.
+- `g:c_compile_command` : Command for compiling C files (default `gcc solution.c -o c.out &> ce.txt`). The input file must be `solution.c` and the output file must be `c.out`, this pref is  only for compile flags.
+- `g:cpp_compile_command`: Command for compiling C++ files. See above. (default `g++ solution.c -o cpp.out &> ce.txt`)
 ## Directory structure
 ```
 Contests directory (g:cphdir)
