@@ -3,20 +3,11 @@ local f = require("plenary.filetype")
 local h = require("helpers")
 local run = require("run_test")
 local fw = require("plenary.window.float")
-local p = require("plenary.path")
 
-local function compile(ft)
-    local exit_status = 0
-    if ft == "c" then
-        p.new(vim.fn.getcwd() .. p.path.sep .. "c.out"):rm()
-        exit_status = os.execute(h.vglobal_or_default("c_compile_command", "gcc solution.c -o c.out &> ce.txt"))
-    elseif ft == "cpp" then
-        p.new(vim.fn.getcwd() .. p.path.sep .. "cpp.out"):rm()
-        exit_status = os.execute(h.vglobal_or_default("cpp_compile_command", "g++ solution.cpp -o cpp.out &> ce.txt"))
-    else
-    end
-    return exit_status
-end
+local def_compile_cmd = {
+    c = "gcc solution.c -o c.out",
+    cpp = "g++ solution.cpp -o cpp.out",
+}
 
 local function cmd(ft)
     if (ft == "python") then
@@ -28,6 +19,35 @@ local function cmd(ft)
     elseif (ft == "lua") then
         return "lua solution.lua"
     end
+end
+
+local function iterate_cases(args)
+    local cwd = vim.fn.getcwd()
+    local ft = f.detect(vim.api.nvim_buf_get_name(0))
+    local ac, cases = 0, 0
+    local results = {}
+    if #args == 0 then
+        for _, input_file in ipairs(s.scan_dir(cwd, {
+            search_pattern = "input%d+",
+            depth = 1,
+        })) do
+            local result, status = run.run_test(
+                string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
+                cmd(ft)
+            )
+            vim.list_extend(results, result)
+            ac = ac + status
+            cases = cases + 1
+        end
+    else
+        for _, case in ipairs(args) do
+            local result, status = run.run_test("input" .. case, cmd(ft))
+            vim.list_extend(results, result)
+            ac = ac + status
+            cases = cases + 1
+        end
+    end
+    return ac, cases, results
 end
 
 local function display(ac, cases, results)
@@ -57,67 +77,32 @@ local M = {}
 
 function M.wrapper(...)
     local args = { ... }
-    local cwd = vim.fn.getcwd()
     local ft = f.detect(vim.api.nvim_buf_get_name(0))
-    local ac, cases = 0, 0
-    local results = {}
-    if compile(ft) == 0 then
-        if #args == 0 then
-            for _, input_file in ipairs(s.scan_dir(cwd, {
-                search_pattern = "input%d+",
-                depth = 1,
-            })) do
-                local result, status = run.run_test(
-                    string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
-                    cmd(ft)
-                )
-                vim.list_extend(results, result)
-                ac = ac + status
-                cases = cases + 1
-            end
-        else
-            for _, case in ipairs(args) do
-                local result, status = run.run_test("input" .. case, cmd(ft))
-                vim.list_extend(results, result)
-                ac = ac + status
-                cases = cases + 1
-            end
-        end
-        display(ac, cases, results)
+    if def_compile_cmd[ft] ~= nil then
+        vim.fn.jobstart(h.vglobal_or_default(ft .. "_compile_command", def_compile_cmd[ft]), {
+            on_exit = function(_, exit_code, _)
+                if exit_code == 0 then
+                    local ac, cases, results = iterate_cases(args)
+                    display(ac, cases, results)
+                end
+            end,
+            on_stderr = function(_, data, _)
+                local err_msg = ""
+                for _, line in ipairs(data) do
+                    err_msg = err_msg .. line .. "\n"
+                end
+                vim.api.nvim_err_write(err_msg)
+            end,
+        })
     else
-        local ce_path = p.new(cwd):joinpath("ce.txt")
-        vim.api.nvim_err_writeln("Compilation error" .. ce_path:read())
-        ce_path:rm()
+        local ac, cases, results = iterate_cases(args)
+        display(ac, cases, results)
     end
 end
 
 function M.retest_wrapper(...)
     local args = { ... }
-    local cwd = vim.fn.getcwd()
-    local ft = f.detect(vim.api.nvim_buf_get_name(0))
-    local results = {}
-    local ac, cases = 0, 0
-    if #args == 0 then
-        for _, input_file in ipairs(s.scan_dir(cwd, {
-            search_pattern = "input%d+",
-            depth = 1,
-        })) do
-            local result, status = run.run_test(
-                string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
-                cmd(ft)
-            )
-            vim.list_extend(results, result)
-            ac = ac + status
-            cases = cases + 1
-        end
-    else
-        for _, case in ipairs(args) do
-            local result, status = run.run_test("input" .. case, cmd(ft))
-            vim.list_extend(results, result)
-            ac = ac + status
-            cases = cases + 1
-        end
-    end
+    local ac, cases, results = iterate_cases(args)
     display(ac, cases, results)
 end
 
