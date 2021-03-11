@@ -9,10 +9,10 @@ local function compile(ft)
     local exit_status = 0
     if ft == "c" then
         p.new(vim.fn.getcwd() .. p.path.sep .. "c.out"):rm()
-        exit_status = os.execute(h.vglobal_or_default("cpp_compile_command", "gcc solution.c -o c.out &> ce.txt"))
+        exit_status = os.execute(h.vglobal_or_default("c_compile_command", "gcc solution.c -o c.out &> ce.txt"))
     elseif ft == "cpp" then
         p.new(vim.fn.getcwd() .. p.path.sep .. "cpp.out"):rm()
-        exit_status = os.execute(h.vglobal_or_default("c_compile_command", "g++ solution.cpp -o cpp.out &> ce.txt"))
+        exit_status = os.execute(h.vglobal_or_default("cpp_compile_command", "g++ solution.cpp -o cpp.out &> ce.txt"))
     else
     end
     return exit_status
@@ -25,7 +25,8 @@ local function cmd(ft)
         return "./c.out"
     elseif (ft == "cpp") then
         return "./cpp.out"
-    else
+    elseif (ft == "lua") then
+        return "lua solution.lua"
     end
 end
 

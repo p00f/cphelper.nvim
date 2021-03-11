@@ -28,7 +28,7 @@ function M.prepare_files(problem_dir, tests)
     end
     print("Wrote solution files")
     vim.cmd(
-        [[e ]] .. problem_dir:joinpath("solution." .. preferred_lang):absolute()
+        "e " .. problem_dir:joinpath("solution." .. preferred_lang):absolute()
     )
 end
 
