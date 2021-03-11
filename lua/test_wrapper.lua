@@ -9,17 +9,12 @@ local def_compile_cmd = {
     cpp = "g++ solution.cpp -o cpp.out",
 }
 
-local function cmd(ft)
-    if (ft == "python") then
-        return "python solution.py"
-    elseif (ft == "c") then
-        return "./c.out"
-    elseif (ft == "cpp") then
-        return "./cpp.out"
-    elseif (ft == "lua") then
-        return "lua solution.lua"
-    end
-end
+local run_cmd = {
+    c = "./c.out",
+    cpp = "./cpp.out",
+    lua = "lua solution.lua",
+    python = "python solution.py",
+}
 
 local function iterate_cases(args)
     local cwd = vim.fn.getcwd()
@@ -33,7 +28,7 @@ local function iterate_cases(args)
         })) do
             local result, status = run.run_test(
                 string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
-                cmd(ft)
+                run_cmd[ft]
             )
             vim.list_extend(results, result)
             ac = ac + status
@@ -41,7 +36,7 @@ local function iterate_cases(args)
         end
     else
         for _, case in ipairs(args) do
-            local result, status = run.run_test("input" .. case, cmd(ft))
+            local result, status = run.run_test("input" .. case, run_cmd[ft])
             vim.list_extend(results, result)
             ac = ac + status
             cases = cases + 1
@@ -95,8 +90,7 @@ function M.wrapper(...)
             end,
         })
     else
-        local ac, cases, results = iterate_cases(args)
-        display(ac, cases, results)
+        M.retest_wrapper(...)
     end
 end
 
