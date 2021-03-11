@@ -63,4 +63,4 @@ Contests directory (g:cphdir)
 
 ## Known bugs
 - Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
-- (This has been fixed in `84cdfdb` by redirecting the output to a temporary file, reading it and deleting it.) Compilation errors mess up messages area. This happens only in terminals, not in neovim GUIs. Scroll there to clean it up.
+- (This has been fixed cleanly in `87e5fab`) Compilation errors mess up messages area. This happens only in terminals, not in neovim GUIs. Scroll there to clean it up.
