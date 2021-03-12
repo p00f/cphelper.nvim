@@ -29,12 +29,16 @@ function M.read_lines(path)
     return lines
 end
 
-function M.split_lines(s)
-    local lines = {}
-    for ss in string.gmatch(s, "[^\r\n]+") do
-        table.insert(lines, ss)
+function M.comparetables(t1, t2)
+    if #t1 ~= #t2 then
+        return false
     end
-    return lines
+    for i = 1, #t1 do
+        if t1[i] ~= t2[i] then
+            return false
+        end
+    end
+    return true
 end
 
 -- Copied from neovim master.

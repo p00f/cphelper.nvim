@@ -1,5 +1,4 @@
 local h = require("helpers")
-local p = require("plenary.path")
 local M = {}
 
 function M.run_test(case, cmd)
@@ -12,36 +11,45 @@ function M.run_test(case, cmd)
     vim.list_extend(result, input_arr)
     vim.list_extend(result, { "Expected output:" })
     vim.list_extend(result, exp_out_arr)
-    --cmd = cmd .. " <" .. case
-    cmd = "./cpp.out <input1"
+    local output_arr = {}
+    local err_arr = {}
+    cmd = cmd .. " <" .. case
     local job_id = vim.fn.jobstart(cmd, {
         on_stdout = function(_, data, _)
-            local message = "Received output: \n"
-            for _, line in ipairs(data) do
-                message = message .. line .. "\n"
-            end
-            vim.api.nvim_err_write(message)
-            --vim.list_extend(result, { "Received output:" })
-            --vim.list_extend(result, data)
-            --if exp_out_arr == data then
-            --    vim.list_extend(result, { "Status: AC" })
-            --    status = 1
-            --else
-            --    vim.list_extend(result, { "Status: WA" })
-            --end
+            vim.list_extend(output_arr, data)
+            output_arr[#output_arr] = nil
         end,
+
         on_stderr = function(_, data, _)
-            --vim.list_extend(result, { "Error: " })
-            --vim.list_extend(result, data)
-            --vim.list_extend(result, { "Status: RTE" })
-            local message = "Error\n"
-            for _, line in ipairs(data) do
-                message = message .. line .. "\n"
+            vim.list_extend(err_arr, data)
+            err_arr[#err_arr] = nil
+        end,
+
+        on_exit = function(_, exit_code, _)
+            if #output_arr ~= 0 then
+                vim.list_extend(result, { "Received output:" })
+                vim.list_extend(result, output_arr)
             end
-            vim.api.nvim_err_writeln(message)
+            if #err_arr ~= 0 then
+                vim.list_extend(result, { "Error:" })
+                vim.list_extend(result, err_arr)
+                vim.list_extend(result, { "Exit code " .. exit_code })
+            end
+            if exit_code == 0 then
+                if h.comparetables(output_arr, exp_out_arr) then
+                    vim.list_extend(result, { "Status: AC" })
+                    status = 1
+                else
+                    vim.list_extend(result, { "Status: WA" })
+                end
+            else
+                vim.list_extend(result, { "Status: RTE" })
+                vim.list_extend(result, { "Exit code " .. exit_code })
+            end
         end,
     })
-    print(job_id)
+
+    vim.fn.jobwait({ job_id }, -1)
     result = h.pad(result, { pad_left = 1, pad_top = 1 })
     return result, status
 end

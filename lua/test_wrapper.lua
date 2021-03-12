@@ -57,10 +57,12 @@ local function display(ac, cases, results)
     local highlights = {
         ["Status: AC"] = "DiffAdd",
         ["Status: WA"] = "Error",
+        ["Status: RTE"] = "Error",
         ["Case #\\d\\+"] = "DiffChange",
         ["Input:"] = "Underlined",
         ["Expected output:"] = "Underlined",
         ["Received output:"] = "Underlined",
+        ["Error:\n"] = "Underlined",
     }
     for match, group in pairs(highlights) do
         vim.fn.matchadd(group, match)
