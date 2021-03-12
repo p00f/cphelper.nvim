@@ -18,6 +18,8 @@ A plugin for automating tasks in competitive programming like downloading testca
 - `:CphRetest [numbers]` to test the same binary without recompiling.
 - `:CphEdit [number]` to edit/add a testcase.
 - `:CphDelete [numbers]` to delete testcases.
+
+The filetype of the floating window showing results is `Results`, so you can disable your indentline/cursorline plugins for this filetype.
 ## Prefs
 - `g:cphdir` : The directory in which contests are stored (default `~/contests`) (Specify **absolute path**)
 - `g:cphlang` : Preferred language for the first solution file opened. You can open another `solution.language` file for a particular problem using `:e` and that file will be used.
