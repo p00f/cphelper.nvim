@@ -31,7 +31,7 @@ local function iterate_cases(args)
                 run_cmd[ft]
             )
             vim.list_extend(results, result)
-            ac = ac + status
+            ac = ac + status -- status is 1 on correct answer, 0 otherwise
             cases = cases + 1
         end
     else
