@@ -62,5 +62,5 @@ Contests directory (g:cphdir)
 <img src="https://raw.githubusercontent.com/p00f/cphelper.nvim/main/screenshot.png" />
 
 ## Known bugs
-- Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
+- (This has been fixed in `c693861`. C and C++ don't write to `stderr` though, so only the exit code is shown. Search online to see what the codes mean) Runtime errors shown as empty output and wrong answer - I don't know of a way to get both stderr and stdout. `io.popen()` gives only stdout. (See https://lua-users.org/lists/lua-l/2007-10/msg00189.html).
 - (This has been fixed cleanly in `87e5fab`) Compilation errors mess up messages area. This happens only in terminals, not in neovim GUIs. Scroll there to clean it up.
