@@ -17,20 +17,18 @@ function M.run_test(case, cmd)
     local job_id = vim.fn.jobstart(cmd, {
         on_stdout = function(_, data, _)
             vim.list_extend(output_arr, data)
-            output_arr[#output_arr] = nil
         end,
 
         on_stderr = function(_, data, _)
             vim.list_extend(err_arr, data)
-            err_arr[#err_arr] = nil
         end,
 
         on_exit = function(_, exit_code, _)
-            if #output_arr ~= 0 then
+            if #output_arr ~= 1 then
                 vim.list_extend(result, { "Received output:" })
                 vim.list_extend(result, output_arr)
             end
-            if #err_arr ~= 0 then
+            if #err_arr ~= 1 then
                 vim.list_extend(result, { "Error:" })
                 vim.list_extend(result, err_arr)
                 vim.list_extend(result, { "Exit code " .. exit_code })
