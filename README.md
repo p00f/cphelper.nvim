@@ -1,5 +1,5 @@
 # cphelper.nvim
-A plugin for automating tasks in competitive programming like downloading testcases, compiling and testing. Supports C, C++ and Python. Does not suppport Windows.
+A plugin for automating tasks in competitive programming like downloading testcases, compiling and testing. Supports C, C++ and Python. Does not suppport Windows. It should work on Linux, macOS and BSDs.
 
 ## Requirements
 - [competitive-companion](https://github.com/jmerle/competitive-companion) browser extension
