@@ -4,7 +4,7 @@ local M = {}
 
 function M.edittc(case) -- receives an integer
         vim.cmd("tabe input" .. case)
-        vim.cmd("split output" .. case)
+        vim.cmd("hsplit output" .. case)
 end
 
 function M.deletetc(...) -- receives integer(s)
