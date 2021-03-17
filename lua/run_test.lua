@@ -17,14 +17,13 @@ function M.run_test(case, cmd)
         local job_id = vim.fn.jobstart(cmd, {
                 on_stdout = function(_, data, _)
                         vim.list_extend(output_arr, data)
+                        output_arr[#output_arr] = nil
                 end,
-
                 on_stderr = function(_, data, _)
                         vim.list_extend(err_arr, data)
                 end,
-
                 on_exit = function(_, exit_code, _)
-                        if #output_arr ~= 1 then
+                        if #output_arr ~= 0 then
                                 vim.list_extend(result, { "Received output:" })
                                 vim.list_extend(result, output_arr)
                         end
