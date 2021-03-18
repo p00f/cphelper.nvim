@@ -7,7 +7,7 @@ A plugin for automating tasks in competitive programming like downloading testca
 - Luarocks: [`http`](https://daurnimator.github.io/lua-http/).
 	- If you use packer.nvim to manage plugins you can
 	```lua
-	use {'p00f/cphelper.nvim', rocks = 'http'}
+	use {'p00f/cphelper.nvim', rocks = 'http', requires = 'nvim-lua/plenary.nvim'}
 	```
 	- Otherwise install it from luarocks using
 	`sudo luarocks install http`
