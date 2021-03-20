@@ -1,7 +1,7 @@
 local M = {}
 
 function M.sanitize(s)
-        local unwanted = { "-", " ", "#", "%." }
+        local unwanted = { "-", " ", "#", "%.", ":" }
         for _, char in pairs(unwanted) do
                 local pos = string.find(s, char)
                 while pos do
@@ -19,14 +19,6 @@ function M.vglobal_or_default(var, default)
         else
                 return default
         end
-end
-
-function M.read_lines(path)
-        local lines = {}
-        for line in io.lines(path) do
-                table.insert(lines, line)
-        end
-        return lines
 end
 
 function M.comparetables(t1, t2)

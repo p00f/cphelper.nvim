@@ -4,7 +4,7 @@ local h = require("helpers")
 local run = require("run_test")
 local fw = require("plenary.window.float")
 
-local def_compile_cmd = {
+local compile_cmd = {
         c = "gcc solution.c -o c.out",
         cpp = "g++ solution.cpp -o cpp.out",
 }
@@ -75,25 +75,22 @@ local M = {}
 function M.wrapper(...)
         local args = { ... }
         local ft = f.detect(vim.api.nvim_buf_get_name(0))
-        if def_compile_cmd[ft] ~= nil then
-                vim.fn.jobstart(
-                        h.vglobal_or_default(ft .. "_compile_command", def_compile_cmd[ft]),
-                        {
-                                on_exit = function(_, exit_code, _)
-                                        if exit_code == 0 then
-                                                local ac, cases, results = iterate_cases(args)
-                                                display(ac, cases, results)
-                                        end
-                                end,
-                                on_stderr = function(_, data, _)
-                                        local err_msg = ""
-                                        for _, line in ipairs(data) do
-                                                err_msg = err_msg .. line .. "\n"
-                                        end
-                                        vim.api.nvim_err_write(err_msg)
-                                end,
-                        }
-                )
+        if compile_cmd[ft] ~= nil then
+                vim.fn.jobstart(h.vglobal_or_default(ft .. "_compile_command", compile_cmd[ft]), {
+                        on_exit = function(_, exit_code, _)
+                                if exit_code == 0 then
+                                        local ac, cases, results = iterate_cases(args)
+                                        display(ac, cases, results)
+                                end
+                        end,
+                        on_stderr = function(_, data, _)
+                                local err_msg = ""
+                                for _, line in ipairs(data) do
+                                        err_msg = err_msg .. line .. "\n"
+                                end
+                                vim.api.nvim_err_write(err_msg)
+                        end,
+                })
         else
                 M.retest_wrapper(...)
         end

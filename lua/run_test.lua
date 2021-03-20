@@ -5,15 +5,14 @@ function M.run_test(case, cmd)
         local case_no = string.sub(case, 6)
         local status = 0 -- status is 1 on correct answer, 0 otherwise
         local result = { "Case #" .. case_no }
-        local input_arr = h.read_lines(case)
-        local exp_out_arr = h.read_lines("output" .. case_no)
+        local input_arr = vim.fn.readfile(case)
+        local exp_out_arr = vim.fn.readfile("output" .. case_no)
         vim.list_extend(result, { "Input:" })
         vim.list_extend(result, input_arr)
         vim.list_extend(result, { "Expected output:" })
         vim.list_extend(result, exp_out_arr)
         local output_arr = {}
         local err_arr = {}
-        cmd = cmd .. " <" .. case
         local job_id = vim.fn.jobstart(cmd, {
                 on_stdout = function(_, data, _)
                         vim.list_extend(output_arr, data)
@@ -45,7 +44,7 @@ function M.run_test(case, cmd)
                         end
                 end,
         })
-
+        vim.fn.chansend(job_id, vim.list_extend(vim.fn.readfile(case), { "" }))
         vim.fn.jobwait({ job_id }, -1)
         result = h.pad(result, { pad_left = 1, pad_top = 1 })
         return result, status
