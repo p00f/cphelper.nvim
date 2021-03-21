@@ -3,8 +3,8 @@ local p = require("plenary.path")
 local M = {}
 
 function M.edittc(case) -- receives an integer
-        vim.cmd("tabe input" .. case)
-        vim.cmd("vsplit output" .. case)
+        vim.cmd("tabe output" .. case)
+        vim.cmd("vsplit input" .. case)
 end
 
 function M.deletetc(...) -- receives integer(s)
