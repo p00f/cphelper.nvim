@@ -84,10 +84,7 @@ function M.wrapper(...)
                                 end
                         end,
                         on_stderr = function(_, data, _)
-                                local err_msg = ""
-                                for _, line in ipairs(data) do
-                                        err_msg = err_msg .. line .. "\n"
-                                end
+                                local err_msg = table.concat(data, "\n")
                                 vim.api.nvim_err_write(err_msg)
                         end,
                 })
