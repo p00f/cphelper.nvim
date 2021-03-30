@@ -1,20 +1,6 @@
-local s = require("plenary.scandir")
 local f = require("plenary.filetype")
-local h = require("helpers")
 local run = require("run_test")
-local fw = require("plenary.window.float")
-
-local compile_cmd = {
-        c = "gcc solution.c -o c.out",
-        cpp = "g++ solution.cpp -o cpp.out",
-}
-
-local run_cmd = {
-        c = "./c.out",
-        cpp = "./cpp.out",
-        lua = "lua solution.lua",
-        python = "python solution.py",
-}
+local defs = require("definitions")
 
 local function iterate_cases(args)
         local cwd = vim.fn.getcwd()
@@ -22,13 +8,13 @@ local function iterate_cases(args)
         local ac, cases = 0, 0
         local results = {}
         if #args == 0 then
-                for _, input_file in ipairs(s.scan_dir(cwd, {
+                for _, input_file in ipairs(require("plenary.scandir").scan_dir(cwd, {
                         search_pattern = "input%d+",
                         depth = 1,
                 })) do
                         local result, status = run.run_test(
                                 string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
-                                run_cmd[ft]
+                                defs.run_cmd[ft]
                         )
                         vim.list_extend(results, result)
                         ac = ac + status -- status is 1 on correct answer, 0 otherwise
@@ -36,7 +22,7 @@ local function iterate_cases(args)
                 end
         else
                 for _, case in ipairs(args) do
-                        local result, status = run.run_test("input" .. case, run_cmd[ft])
+                        local result, status = run.run_test("input" .. case, defs.run_cmd[ft])
                         vim.list_extend(results, result)
                         ac = ac + status
                         cases = cases + 1
@@ -50,7 +36,7 @@ local function display(ac, cases, results)
         if ac == cases then
                 header = header .. " 🎉🎉"
         end
-        local bufnr = fw.centered_with_top_win({ header }).bufnr
+        local bufnr = require("plenary.window.float").centered_with_top_win({ header }, { external = true }).bufnr
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
         vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
         vim.api.nvim_buf_set_option(bufnr, "filetype", "Results")
@@ -72,28 +58,31 @@ end
 
 local M = {}
 
-function M.wrapper(...)
+function M.process(...)
         local args = { ... }
         local ft = f.detect(vim.api.nvim_buf_get_name(0))
-        if compile_cmd[ft] ~= nil then
-                vim.fn.jobstart(h.vglobal_or_default(ft .. "_compile_command", compile_cmd[ft]), {
-                        on_exit = function(_, exit_code, _)
-                                if exit_code == 0 then
-                                        local ac, cases, results = iterate_cases(args)
-                                        display(ac, cases, results)
-                                end
-                        end,
-                        on_stderr = function(_, data, _)
-                                local err_msg = table.concat(data, "\n")
-                                vim.api.nvim_err_write(err_msg)
-                        end,
-                })
+        if defs.compile_cmd[ft] ~= nil then
+                vim.fn.jobstart(
+                        require("helpers").vglobal_or_default(ft .. "_compile_command", defs.compile_cmd[ft]),
+                        {
+                                on_exit = function(_, exit_code, _)
+                                        if exit_code == 0 then
+                                                local ac, cases, results = iterate_cases(args)
+                                                display(ac, cases, results)
+                                        end
+                                end,
+                                on_stderr = function(_, data, _)
+                                        local err_msg = table.concat(data, "\n")
+                                        vim.api.nvim_err_write(err_msg)
+                                end,
+                        }
+                )
         else
-                M.retest_wrapper(...)
+                M.process_retests(...)
         end
 end
 
-function M.retest_wrapper(...)
+function M.process_retests(...)
         local args = { ... }
         local ac, cases, results = iterate_cases(args)
         display(ac, cases, results)
