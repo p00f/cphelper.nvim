@@ -13,7 +13,10 @@ local function iterate_cases(args)
                         depth = 1,
                 })) do
                         local result, status = run.run_test(
-                                string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
+                                string.sub(
+                                        input_file,
+                                        string.len(cwd) - string.len(input_file) + 1
+                                ),
                                 defs.run_cmd[ft]
                         )
                         vim.list_extend(results, result)
@@ -22,7 +25,8 @@ local function iterate_cases(args)
                 end
         else
                 for _, case in ipairs(args) do
-                        local result, status = run.run_test("input" .. case, defs.run_cmd[ft])
+                        local result, status =
+                                run.run_test("input" .. case, defs.run_cmd[ft])
                         vim.list_extend(results, result)
                         ac = ac + status
                         cases = cases + 1
@@ -36,7 +40,8 @@ local function display(ac, cases, results)
         if ac == cases then
                 header = header .. " 🎉🎉"
         end
-        local bufnr = require("plenary.window.float").centered_with_top_win({ header }, { external = true }).bufnr
+        local bufnr =
+                require("plenary.window.float").centered_with_top_win({ header }, { external = true }).bufnr
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
         vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
         vim.api.nvim_buf_set_option(bufnr, "filetype", "Results")
@@ -67,7 +72,8 @@ function M.process(...)
                         {
                                 on_exit = function(_, exit_code, _)
                                         if exit_code == 0 then
-                                                local ac, cases, results = iterate_cases(args)
+                                                local ac, cases, results =
+                                                        iterate_cases(args)
                                                 display(ac, cases, results)
                                         end
                                 end,

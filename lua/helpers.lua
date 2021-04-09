@@ -44,12 +44,13 @@ function M.pad(contents, opts)
         local left_padding = (" "):rep(opts.pad_left or 1)
         local right_padding = (" "):rep(opts.pad_right or 1)
         for i, line in ipairs(contents) do
-                contents[i] = string.format(
-                        "%s%s%s",
-                        left_padding,
-                        line:gsub("\r", ""),
-                        right_padding
-                )
+                contents[i] =
+                        string.format(
+                                "%s%s%s",
+                                left_padding,
+                                line:gsub("\r", ""),
+                                right_padding
+                        )
         end
         if opts.pad_top then
                 for _ = 1, opts.pad_top do

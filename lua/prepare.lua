@@ -1,6 +1,7 @@
 local p = require("plenary.path")
 local h = require("helpers")
-local contests_dir = p.new(h.vglobal_or_default("cphdir", (vim.loop.os_homedir() .. p.path.sep .. "contests")))
+local contests_dir =
+        p.new(h.vglobal_or_default("cphdir", (vim.loop.os_homedir() .. p.path.sep .. "contests")))
 local langs = { "c", "cpp", "py" }
 local preferred_lang = h.vglobal_or_default("cphlang", "cpp")
 
@@ -27,9 +28,7 @@ function M.prepare_files(problem_dir, tests)
                 problem_dir:joinpath("solution." .. lang):touch()
         end
         print("Wrote solution files")
-        vim.cmd(
-                "e " .. problem_dir:joinpath("solution." .. preferred_lang):absolute()
-        )
+        vim.cmd("e " .. problem_dir:joinpath("solution." .. preferred_lang):absolute())
 end
 
 return M
