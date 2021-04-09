@@ -1,6 +1,6 @@
 name: luacheck
 on:
-  push: {branches: ["master"]}
+  push: {branches: ["main"]}
   pull_request:
     types: [opened, synchronize, reopened]
 
