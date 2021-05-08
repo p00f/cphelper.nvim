@@ -21,6 +21,9 @@ A plugin for automating tasks in competitive programming like downloading test c
 - `:CphDelete [numbers]` to delete testcases.
 
 The filetype of the floating window showing results is `Results`, so you can disable your indentline/cursorline plugins for this filetype.
+
+## Demo video
+<img src="https://raw.githubusercontent.com/p00f/cphelper.nvim/main/demo.mp4" />
 ## Prefs
 - `g:cphdir` : The directory in which contests are stored (default `~/contests`) (Specify **absolute path**)
 - `g:cphlang` : Preferred language for the first solution file opened. You can open another `solution.language` file for a particular problem using `:e` and that file will be used.
