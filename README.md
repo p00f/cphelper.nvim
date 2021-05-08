@@ -10,7 +10,7 @@ A plugin for automating tasks in competitive programming like downloading test c
 	use {'p00f/cphelper.nvim', rocks = 'http', requires = 'nvim-lua/plenary.nvim'}
 	```
 	- Otherwise, see your neovim Lua version using `:version` (the third line) (LuaJIT is 5.1) and then install it from luarocks using
-	`sudo luarocks install http --lua-version 5.1` (For installing using luarocks, you need to have lua 5.1 installed, most distros ship 5.4 by default, so you need to install other packages, for example `lua51` on archlinux.)
+	`sudo luarocks install http --lua-version 5.1` (For installation using luarocks, you need to have lua 5.1 installed, most distros ship 5.4 by default, so you need to install other packages, for example `lua51` on archlinux.)
 
 ## Instructions
 - Use `:CphReceive` and press the "parse task" button in the extension to prepare files. This will open an empty solution file in your preferred language. (See )
