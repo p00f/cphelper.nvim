@@ -3,7 +3,7 @@ local M = {}
 
 function M.run_test(case, cmd)
         local case_no = string.sub(case, 6)
-        local timeout = h.vglobal_or_default("cphtimeout", 2000)
+        local timeout = vim.g.cphtimeout or 2000
         local status = 0 -- status is 1 on correct answer, 0 otherwise
         local result = { "Case #" .. case_no }
         local input_arr = vim.fn.readfile(case)
@@ -48,10 +48,7 @@ function M.run_test(case, cmd)
         vim.fn.chansend(job_id, vim.list_extend(vim.fn.readfile(case), { "" }))
         local len = vim.fn.jobwait({ job_id }, timeout)
         if len[1] == -1 then
-                vim.list_extend(
-                        result,
-                        { string.format("Status: Timed out after %d ms", timeout) }
-                )
+                vim.list_extend(result, { string.format("Status: Timed out after %d ms", timeout) })
         end
         result = h.pad(result, { pad_left = 1, pad_top = 1 })
         return result, status

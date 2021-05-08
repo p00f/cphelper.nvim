@@ -1,9 +1,8 @@
 local p = require("plenary.path")
 local h = require("helpers")
-local contests_dir =
-        p.new(h.vglobal_or_default("cphdir", (vim.loop.os_homedir() .. p.path.sep .. "contests")))
-local langs = { "c", "cpp", "py" }
-local preferred_lang = h.vglobal_or_default("cphlang", "cpp")
+local defns = require("definitions")
+local contests_dir = p.new(vim.g.cphdir or (vim.loop.os_homedir() .. p.path.sep .. "contests"))
+local preferred_lang = vim.g.cphlang or "cpp"
 
 local M = {}
 
@@ -24,11 +23,30 @@ function M.prepare_files(problem_dir, tests)
                 problem_dir:joinpath("output" .. i):write(test["output"], "w")
         end
         print("Wrote tests")
-        for _, lang in pairs(langs) do
-                problem_dir:joinpath("solution." .. lang):touch()
-        end
+        local extension = defns["extensions"][preferred_lang]
+        problem_dir:joinpath("solution." .. extension):touch()
         print("Wrote solution files")
-        vim.cmd("e " .. problem_dir:joinpath("solution." .. preferred_lang):absolute())
+
+        if vim.g.cph_rust_createjson then
+                problem_dir:joinpath("rust-project.json"):write(
+                        vim.g.rustjson or ([[
+{
+     "sysroot_src": "]] .. vim.loop.os_homedir() .. [[/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
+     "crates": [
+             {
+                 "root_module": "solution.rs",
+                 "edition": "2018",
+                 "deps": []
+            }
+     ]
+}
+]]),
+                        "w"
+                )
+                print("Wrote rust-project.json")
+        end
+
+        vim.cmd("e " .. problem_dir:joinpath("solution." .. extension):absolute())
 end
 
 return M
