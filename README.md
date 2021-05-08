@@ -29,7 +29,7 @@ The filetype of the floating window showing results is `Results`, so you can dis
 - `g:cphtimeout`: Time limit per test case in milliseconds (default 2000).
 - `g:cph_rust_createjson`: Whether to create a `rust-project.json` for rust-analyzer. (default false)
 - `g:cph_rustjson`: `rust-project.json` created for rust-analyzer (see above).You likely need to change this to the appropriate value for your setup if it doesn't work, mostly change `<home-directory>/.rustup/toolchains/stable-x86_64-unknown-linux-gnu` to the output of `rustc --print sysroot`. Default:
-```json
+```jsonc
 {
      "sysroot_src": "<home-directory>/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
      "crates": [
