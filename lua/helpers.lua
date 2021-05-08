@@ -12,15 +12,6 @@ function M.sanitize(s)
         return s
 end
 
-function M.vglobal_or_default(var, default)
-        local exists, value = pcall(vim.api.nvim_get_var, var)
-        if exists then
-                return value
-        else
-                return default
-        end
-end
-
 function M.comparetables(t1, t2)
         if #t1 ~= #t2 then
                 return false
@@ -44,13 +35,12 @@ function M.pad(contents, opts)
         local left_padding = (" "):rep(opts.pad_left or 1)
         local right_padding = (" "):rep(opts.pad_right or 1)
         for i, line in ipairs(contents) do
-                contents[i] =
-                        string.format(
-                                "%s%s%s",
-                                left_padding,
-                                line:gsub("\r", ""),
-                                right_padding
-                        )
+                contents[i] = string.format(
+                        "%s%s%s",
+                        left_padding,
+                        line:gsub("\r", ""),
+                        right_padding
+                )
         end
         if opts.pad_top then
                 for _ = 1, opts.pad_top do
