@@ -1,4 +1,5 @@
-local server = require("http.server") -- switch to <3 luv for windows support
+-- TODO: switch to <3 for windows support
+local server = require("http.server")
 local headers = require("http.headers")
 local prepare = require("prepare")
 
