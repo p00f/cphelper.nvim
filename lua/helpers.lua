@@ -12,12 +12,15 @@ function M.sanitize(s)
     return s
 end
 
+-- Compares two tables (list-like/map-like)
+--- @param t1 table #The first table
+--- @param t2 table #The second table
 function M.comparetables(t1, t2)
     if #t1 ~= #t2 then
         return false
     end
-    for i = 1, #t1 do
-        if t1[i] ~= t2[i] then
+    for k, v in pairs(t1) do
+        if t2[k] ~= v then
             return false
         end
     end
