@@ -50,7 +50,6 @@ function M.run_test(case, cmd)
     if len[1] == -1 then
         vim.list_extend(result, { string.format("Status: Timed out after %d ms", timeout) })
     end
-    result = h.pad(result, { pad_left = 1, pad_top = 1 })
     return result, status
 end
 return M

@@ -53,4 +53,22 @@ function M.pad(contents, opts)
     return contents
 end
 
+function M.display(contents)
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    local width = math.floor(vim.o.columns * 0.5)
+    local height = math.floor(vim.o.lines * 0.8)
+    vim.api.nvim_open_win(bufnr, true, {
+        border = "rounded",
+        style = "minimal",
+        relative = "editor",
+        row = math.floor(((vim.o.lines - height) / 2) - 1),
+        col = math.floor((vim.o.columns - width) / 2),
+        width = width,
+        height = height,
+    })
+    contents = M.pad(contents, { pad_top = 1 })
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, contents)
+    return bufnr
+end
+
 return M

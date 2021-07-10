@@ -32,14 +32,15 @@ local function iterate_cases(args)
 end
 
 local function display(ac, cases, results)
-    local header = "RESULTS: " .. ac .. "/" .. cases .. " AC"
+    local header = "   RESULTS: " .. ac .. "/" .. cases .. " AC"
     if ac == cases then
         header = header .. " 🎉🎉"
     end
-    local bufnr = require("plenary.window.float").centered_with_top_win({ header }, {
-        external = true,
-    }).bufnr
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, results)
+    local contents = { "", header, "" }
+    for _, line in ipairs(results) do
+        table.insert(contents, line)
+    end
+    local bufnr = require("helpers").display(contents)
     vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
     vim.api.nvim_buf_set_option(bufnr, "filetype", "Results")
     local highlights = {

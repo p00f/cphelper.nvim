@@ -28,8 +28,7 @@ function M.prepare_files(problem_dir, tests)
     print("Wrote solution files")
 
     if vim.g.cph_rust_createjson then
-        problem_dir:joinpath("rust-project.json"):write(
-            vim.g.rustjson or ([[
+        problem_dir:joinpath("rust-project.json"):write(vim.g.rustjson or ([[
 {
      "sysroot_src": "]] .. vim.loop.os_homedir() .. [[/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
      "crates": [
@@ -40,9 +39,7 @@ function M.prepare_files(problem_dir, tests)
             }
      ]
 }
-]]),
-            "w"
-        )
+]]), "w")
         print("Wrote rust-project.json")
     end
 
