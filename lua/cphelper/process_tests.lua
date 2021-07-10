@@ -1,6 +1,6 @@
 local f = require("plenary.filetype")
-local run = require("run_test")
-local defs = require("definitions")
+local run = require("cphelper.run_test")
+local defs = require("cphelper.definitions")
 
 local function iterate_cases(args)
     local cwd = vim.fn.getcwd()
@@ -40,7 +40,7 @@ local function display_results(ac, cases, results)
     for _, line in ipairs(results) do
         table.insert(contents, line)
     end
-    local bufnr = require("helpers").display_right(contents)
+    local bufnr = require("cphelper.helpers").display_right(contents)
     vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
     vim.api.nvim_buf_set_option(bufnr, "filetype", "Results")
     local highlights = {

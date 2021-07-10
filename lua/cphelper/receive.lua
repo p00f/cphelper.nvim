@@ -1,7 +1,7 @@
 -- TODO: switch to <3 for windows support
 local server = require("http.server")
 local headers = require("http.headers")
-local prepare = require("prepare")
+local prepare = require("cphelper.prepare")
 
 local M = {}
 

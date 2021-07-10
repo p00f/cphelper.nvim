@@ -1,6 +1,6 @@
 local p = require("plenary.path")
-local h = require("helpers")
-local defns = require("definitions")
+local h = require("cphelper.helpers")
+local defns = require("cphelper.definitions")
 local contests_dir = p.new(vim.g.cphdir or (vim.loop.os_homedir() .. p.path.sep .. "contests"))
 local preferred_lang = vim.g.cphlang or "cpp"
 

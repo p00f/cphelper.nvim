@@ -1,4 +1,4 @@
-local h = require("helpers")
+local h = require("cphelper.helpers")
 local M = {}
 
 function M.run_test(case, cmd)
