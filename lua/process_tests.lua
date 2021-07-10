@@ -31,7 +31,7 @@ local function iterate_cases(args)
     return ac, cases, results
 end
 
-local function display(ac, cases, results)
+local function display_results(ac, cases, results)
     local header = "   RESULTS: " .. ac .. "/" .. cases .. " AC"
     if ac == cases then
         header = header .. " 🎉🎉"
@@ -40,7 +40,7 @@ local function display(ac, cases, results)
     for _, line in ipairs(results) do
         table.insert(contents, line)
     end
-    local bufnr = require("helpers").display(contents)
+    local bufnr = require("helpers").display_right(contents)
     vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
     vim.api.nvim_buf_set_option(bufnr, "filetype", "Results")
     local highlights = {
@@ -57,6 +57,7 @@ local function display(ac, cases, results)
         vim.fn.matchadd(group, match)
     end
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<esc>", "<cmd>bd<CR>", { noremap = true })
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>bd<CR>", { noremap = true })
 end
 
 local M = {}
@@ -69,7 +70,7 @@ function M.process(...)
             on_exit = function(_, exit_code, _)
                 if exit_code == 0 then
                     local ac, cases, results = iterate_cases(args)
-                    display(ac, cases, results)
+                    display_results(ac, cases, results)
                 end
             end,
             on_stderr = function(_, data, _)
@@ -85,7 +86,7 @@ end
 function M.process_retests(...)
     local args = { ... }
     local ac, cases, results = iterate_cases(args)
-    display(ac, cases, results)
+    display_results(ac, cases, results)
 end
 
 return M
