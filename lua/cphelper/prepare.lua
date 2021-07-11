@@ -7,13 +7,13 @@ local preferred_lang = vim.g.cphlang or "cpp"
 local M = {}
 
 function M.prepare_folders(problem, group)
-    local problem_dir = nil
+    local problem_dir
     if group == "UVa Online Judge" then
         problem_dir = contests_dir:joinpath("UVa", h.sanitize(problem))
     elseif group == "DMOJ" then
         local p1, p2 = string.find(problem, "% P%d+% %-% ")
         local contest = h.sanitize(string.sub(problem, 1, p1))
-        local problem = h.sanitize(string.sub(problem, p2))
+        problem = h.sanitize(string.sub(problem, p2))
         problem_dir = contests_dir:joinpath("DMOJ", contest, problem)
     else
         local sep_pos = string.find(group, "% %-")
