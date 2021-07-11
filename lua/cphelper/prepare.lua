@@ -10,11 +10,6 @@ function M.prepare_folders(problem, group)
     local problem_dir
     if group == "UVa Online Judge" then
         problem_dir = contests_dir:joinpath("UVa", h.sanitize(problem))
-    elseif group == "DMOJ" then
-        local p1, p2 = string.find(problem, "% P%d+% %-% ")
-        local contest = h.sanitize(string.sub(problem, 1, p1))
-        problem = h.sanitize(string.sub(problem, p2))
-        problem_dir = contests_dir:joinpath("DMOJ", contest, problem)
     else
         local sep_pos = string.find(group, "% %-")
         local judge = h.sanitize(string.sub(group, 1, sep_pos))
