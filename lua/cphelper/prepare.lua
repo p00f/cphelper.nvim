@@ -7,12 +7,21 @@ local preferred_lang = vim.g.cphlang or "cpp"
 local M = {}
 
 function M.prepare_folders(problem, group)
-    -- group = judge + contest
-    local sep_pos = string.find(group, "% %-")
-    local judge = h.sanitize(string.sub(group, 1, sep_pos))
-    local contest = h.sanitize(string.sub(group, sep_pos + 1))
-    problem = h.sanitize(problem)
-    local problem_dir = contests_dir:joinpath(judge, contest, problem)
+    local problem_dir = nil
+    if group == "UVa Online Judge" then
+        problem_dir = contests_dir:joinpath("UVa", h.sanitize(problem))
+    elseif group == "DMOJ" then
+        local p1, p2 = string.find(problem, "% P%d+% %-% ")
+        local contest = h.sanitize(string.sub(problem, 1, p1))
+        local problem = h.sanitize(string.sub(problem, p2))
+        problem_dir = contests_dir:joinpath("DMOJ", contest, problem)
+    else
+        local sep_pos = string.find(group, "% %-")
+        local judge = h.sanitize(string.sub(group, 1, sep_pos))
+        local contest = h.sanitize(string.sub(group, sep_pos + 1))
+        problem = h.sanitize(problem)
+        problem_dir = contests_dir:joinpath(judge, contest, problem)
+    end
     problem_dir:mkdir({ exists_ok = true, parents = true })
     return problem_dir
 end

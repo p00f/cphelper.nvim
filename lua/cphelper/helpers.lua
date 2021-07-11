@@ -1,7 +1,7 @@
 local M = {}
 
 function M.sanitize(s)
-    local unwanted = { "-", " ", "#", "%.", ":" }
+    local unwanted = { "-", " ", "#", "%.", ":", "'" }
     for _, char in pairs(unwanted) do
         local pos = string.find(s, char)
         while pos do
@@ -58,7 +58,7 @@ function M.display_right(contents)
     local width = math.floor(vim.o.columns * 0.5)
     local height = math.floor(vim.o.lines * 0.8)
     vim.api.nvim_open_win(bufnr, true, {
-        border = "rounded",
+        border = vim.g.cphborder or "rounded",
         style = "minimal",
         relative = "editor",
         row = math.floor(((vim.o.lines - height) / 2) - 1),
