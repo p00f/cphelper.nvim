@@ -56,13 +56,13 @@ end
 function M.display_right(contents)
     local bufnr = vim.api.nvim_create_buf(false, true)
     local width = math.floor(vim.o.columns * 0.5)
-    local height = math.floor(vim.o.lines * 0.8)
+    local height = math.floor(vim.o.lines * 0.9)
     vim.api.nvim_open_win(bufnr, true, {
         border = vim.g.cphborder or "rounded",
         style = "minimal",
         relative = "editor",
         row = math.floor(((vim.o.lines - height) / 2) - 1),
-        col = math.floor(vim.o.columns - width),
+        col = math.floor(vim.o.columns - width - 1),
         width = width,
         height = height,
     })

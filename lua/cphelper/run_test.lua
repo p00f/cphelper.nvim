@@ -49,6 +49,7 @@ function M.run_test(case, cmd)
     local len = vim.fn.jobwait({ job_id }, timeout)
     if len[1] == -1 then
         vim.list_extend(result, { string.format("Status: Timed out after %d ms", timeout) })
+        vim.fn.jobstop(job_id)
     end
     return result, status
 end
