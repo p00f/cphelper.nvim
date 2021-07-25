@@ -2,7 +2,6 @@ return {
     compile_cmd = {
         c = "gcc solution.c -o c.out",
         cpp = "g++ solution.cpp -o cpp.out",
-        rust = "rustc solution.rs -o rust.out",
     },
     run_cmd = {
         c = "./c.out",
@@ -18,4 +17,5 @@ return {
         lua = "lua",
         rust = "rs",
     },
+    rustc_args = "-o rust.out",
 }

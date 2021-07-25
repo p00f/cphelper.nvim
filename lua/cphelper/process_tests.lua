@@ -1,4 +1,5 @@
 local f = require("plenary.filetype")
+local path = require("plenary.path")
 local run = require("cphelper.run_test")
 local defs = require("cphelper.definitions")
 
@@ -63,21 +64,21 @@ end
 local M = {}
 
 function M.process(...)
-    local args = { ... }
     local ft = f.detect(vim.api.nvim_buf_get_name(0))
+    local binary = path.new(path.new(vim.api.nvim_buf_get_name(0)):parent()):joinpath(ft .. ".out")
+    pcall(binary:rm(), nil)
     if defs.compile_cmd[ft] ~= nil then
-        vim.fn.jobstart((vim.g[ft .. "_compile_command"] or defs.compile_cmd[ft]), {
-            on_exit = function(_, exit_code, _)
-                if exit_code == 0 then
-                    local ac, cases, results = iterate_cases(args)
-                    display_results(ac, cases, results)
-                end
-            end,
-            on_stderr = function(_, data, _)
-                local err_msg = table.concat(data, "\n")
-                vim.api.nvim_err_write(err_msg)
-            end,
-        })
+        vim.api.nvim_command("make " .. ft)
+        if binary:exists() then
+            M.process_retests(...)
+        end
+    elseif ft == "rust" then
+        vim.cmd("compiler rustc")
+        local rustc_args = vim.g.cph_rustc_args or defs.rustc_args
+        vim.api.nvim_command("make " .. rustc_args)
+        if binary:exists() then
+            M.process_retests(...)
+        end
     else
         M.process_retests(...)
     end
