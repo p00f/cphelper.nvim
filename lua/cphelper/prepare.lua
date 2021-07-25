@@ -47,6 +47,11 @@ function M.prepare_files(problem_dir, tests)
         print("Wrote rust-project.json")
     end
 
+    problem_dir:joinpath("Makefile"):write([[c:
+	]] .. (vim.g.c_compile_command or defns.compile_cmd.c) .. [[
+cpp:
+	]] .. (vim.g.cpp_compile_command or defns.compile_cmd.cpp))
+
     vim.cmd("e " .. problem_dir:joinpath("solution." .. extension):absolute())
 end
 

@@ -11,7 +11,7 @@ A plugin for automating tasks in competitive programming like downloading test c
 - Use `:CphReceive` and press the "parse task" button in the extension to prepare files. This will open an empty solution file in your preferred language. (See )
 - `:CphTest [numbers]` to test your solution. If test case number(s) is specified, only those are run, otherwise, all cases are run.
 - `:CphRetest [numbers]` to test the same binary without recompiling.
-- `:CphEdit [number]` to edit/add a testcase.
+- `:CphEdit [number]` to edit/add testcases.
 - `:CphDelete [numbers]` to delete testcases.
 
 The filetype of the floating window showing results is `Results`, so you can disable your indentline/cursorline plugins for this filetype.
@@ -23,7 +23,7 @@ https://user-images.githubusercontent.com/36493671/117531842-39bc5880-b002-11eb-
 ## Prefs
 - `g:cphdir` : The directory in which contests are stored (default `~/contests`) (Specify **absolute path**)
 - `g:cphlang` : Preferred language for the first solution file opened. You can open another `solution.language` file for a particular problem using `:e` and that file will be used.
-- `g:rust_compile_command` : Command for compiling Rust files (default `rustc solution.rs -o rust.out`)
+- `g:cph_rustc_args` : Arguments passed to rustc (default `-o rust.out`). Note: The output file must be `rust.out`.
 - `g:c_compile_command` : Command for compiling C files (default `gcc solution.c -o c.out`). The input file must be `solution.c` and the output file must be `c.out`, this pref is  only for compile flags.
 - `g:cpp_compile_command`: Command for compiling C++ files. See above. (default `g++ solution.cpp -o cpp.out`)
 - `g:cphtimeout`: Time limit per test case in milliseconds (default 2000).
