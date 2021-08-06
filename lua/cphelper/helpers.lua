@@ -1,7 +1,7 @@
 local M = {}
 
 function M.sanitize(s)
-    local unwanted = { "-", " ", "#", "%.", ":", "'" }
+    local unwanted = { "-", " ", "#", "%.", ":", "'", "+" }
     for _, char in pairs(unwanted) do
         local pos = string.find(s, char)
         while pos do
