@@ -1,27 +1,41 @@
--- TODO: switch to <3 for windows support
-local server = require("http.server")
-local headers = require("http.headers")
 local prepare = require("cphelper.prepare")
+local uv = vim.loop
+
+local function processs(data)
+    local json = vim.fn.json_decode(data)
+    local problem_dir = prepare.prepare_folders(json.name, json.group)
+    prepare.prepare_files(problem_dir, json.tests)
+    print("All the best!")
+end
 
 local M = {}
 
 function M.pass()
-    local s = server.listen({
-        host = "localhost",
-        port = 27121,
-        onstream = function(_, stream) -- first arg is server
-            local json = vim.fn.json_decode(stream:get_body_as_string())
-            local problem_dir = prepare.prepare_folders(json.name, json.group)
-            prepare.prepare_files(problem_dir, json.tests)
-            local header = headers:new()
-            header:append(":status", "201")
-            stream:write_headers(header, true)
-            print("All the best!")
-            server:close()
-        end,
-    })
-    s:listen()
-    s:loop()
+    local buffer = ""
+    local server = uv.new_tcp()
+    server:bind("127.0.0.1", 27121)
+    server:listen(128, function(err)
+        assert(not err, err)
+        local client = uv.new_tcp()
+        server:accept(client)
+        client:read_start(function(err, chunk)
+            assert(not err, err)
+            if chunk then
+                buffer = buffer .. chunk
+            else
+                client:shutdown()
+                client:close()
+                print(buffer)
+            end
+        end)
+    end)
+    print("TCP server listening at 127.0.0.1 port 27121")
+    uv.run()
 end
 
+--[[ local lines = {}
+for s in string.gmatch(str, "[^\r\n]+") do
+    table.insert(lines, s)
+end
+ ]]
 return M
