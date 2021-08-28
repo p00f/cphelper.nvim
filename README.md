@@ -85,5 +85,3 @@ Contests directory (g:cphdir)
 ## Screenshot
 <img src="https://raw.githubusercontent.com/p00f/cphelper.nvim/main/screenshot.png" />
 
-## Known bugs
-   None as of now :)
