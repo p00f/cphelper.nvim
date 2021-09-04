@@ -1,7 +1,9 @@
 local prepare = require("cphelper.prepare")
 local uv = vim.loop
 
-local function processs(data)
+local received = false
+
+local function process(data)
     local json = vim.fn.json_decode(data)
     local problem_dir = prepare.prepare_folders(json.name, json.group)
     prepare.prepare_files(problem_dir, json.tests)
@@ -10,7 +12,7 @@ end
 
 local M = {}
 
-function M.pass()
+function M.receive()
     local buffer = ""
     local server = uv.new_tcp()
     server:bind("127.0.0.1", 27121)
@@ -25,17 +27,24 @@ function M.pass()
             else
                 client:shutdown()
                 client:close()
-                print(buffer)
+                local lines = {}
+                for line in string.gmatch(buffer, "[^\r\n]+") do
+                    table.insert(lines, line)
+                end
+                buffer = lines[#lines]
+                received = true
             end
         end)
     end)
-    print("TCP server listening at 127.0.0.1 port 27121")
     uv.run()
+    while true do
+        if received then
+            process(buffer)
+            break
+        else
+            print("waiting")
+        end
+    end
 end
 
---[[ local lines = {}
-for s in string.gmatch(str, "[^\r\n]+") do
-    table.insert(lines, s)
-end
- ]]
 return M
