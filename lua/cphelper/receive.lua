@@ -1,8 +1,6 @@
 local prepare = require("cphelper.prepare")
 local uv = vim.loop
 
-local received = false
-
 local function process(data)
     local json = vim.fn.json_decode(data)
     local problem_dir = prepare.prepare_folders(json.name, json.group)
@@ -13,6 +11,7 @@ end
 local M = {}
 
 function M.receive()
+    print("Listening on port 27121")
     local buffer = ""
     local server = uv.new_tcp()
     server:bind("127.0.0.1", 27121)
@@ -32,19 +31,13 @@ function M.receive()
                     table.insert(lines, line)
                 end
                 buffer = lines[#lines]
-                received = true
+                vim.schedule(function()
+                    process(buffer)
+                end)
             end
         end)
     end)
     uv.run()
-    while true do
-        if received then
-            process(buffer)
-            break
-        else
-            print("waiting")
-        end
-    end
 end
 
 return M
