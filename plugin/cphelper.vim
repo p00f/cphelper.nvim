@@ -1,4 +1,5 @@
 command CphReceive lua require 'cphelper.receive'.receive()
+command CphStop lua require 'cphelper.receive'.stop()
 command -nargs=* CphTest lua require 'cphelper.process_tests'.process(<f-args>)
 command -nargs=* CphRetest lua require 'cphelper.process_tests'.process_retests(<f-args>)
 command -nargs=+ CphDelete lua require 'cphelper.modify_tc'.deletetc(<f-args>)
