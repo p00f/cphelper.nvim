@@ -7,7 +7,6 @@ local preferred_lang = vim.g.cphlang or "cpp"
 local M = {}
 
 function M.prepare_folders(problem, group)
-    print("group: " .. group .. "  problem: " .. problem)
     local problem_dir
     if group == "UVa Online Judge" then
         problem_dir = contests_dir:joinpath("UVa", h.sanitize(problem))
