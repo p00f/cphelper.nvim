@@ -1,5 +1,5 @@
 # cphelper.nvim
-A plugin for automating tasks in competitive programming like downloading test cases, compiling and testing. Supports Rust, C, C++, Python and Lua. Does not work on Windows. It should work on Linux, macOS and BSDs.
+A plugin for automating tasks in competitive programming like downloading test cases, compiling and testing. Supports Rust, C, C++, Python and Lua.
 
 ## Requirements
 - Neovim >= 0.4 (Current stable is 0.5)
