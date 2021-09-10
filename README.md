@@ -2,16 +2,9 @@
 A plugin for automating tasks in competitive programming like downloading test cases, compiling and testing. Supports Rust, C, C++, Python and Lua. Does not work on Windows. It should work on Linux, macOS and BSDs.
 
 ## Requirements
+- Neovim >= 0.4 (Current stable is 0.5)
 - [competitive-companion](https://github.com/jmerle/competitive-companion) browser extension (works with Firefox and all Chromium browsers)
 - Plugin: [`nvim-lua/plenary.nvim`](https://github.com/nvim-lua/plenary.nvim/) (Install using your plugin manager)
-- Luarocks: [`http`](https://daurnimator.github.io/lua-http/).
-	- If you use packer.nvim to manage plugins you can
-	```lua
-	use {'p00f/cphelper.nvim', rocks = 'http', requires = 'nvim-lua/plenary.nvim'}
-	```
-	- Otherwise, see your neovim lua version using `:version` (the third line) (LuaJIT is 5.1) and then install it from luarocks using
-	`sudo luarocks install http --lua-version <version>` (You need to have a lua version matching neovim's lua version installed. Most distros ship 5.4 by default, so you need to install other packages.)
-    - Archlinux users can install [`lua5x-http`](https://archlinux.org/packages/?sort=&q=http&maintainer=daurnimator&flagged=)
 
 
 ## Instructions
