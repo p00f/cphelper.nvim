@@ -19,8 +19,8 @@ function M.receive()
         assert(not err, err)
         local client = uv.new_tcp()
         server:accept(client)
-        client:read_start(function(err, chunk)
-            assert(not err, err)
+        client:read_start(function(error, chunk)
+            assert(not error, error)
             if chunk then
                 buffer = buffer .. chunk
             else
