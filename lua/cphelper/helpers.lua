@@ -33,7 +33,7 @@ end
 
 -- Copied from neovim master.
 -- Credits: Christian Clason and Hirokazu Hata
-function M.pad(contents, opts)
+local function pad(contents, opts)
     vim.validate({
         contents = { contents, "t" },
         opts = { opts, "t", true },
@@ -73,7 +73,7 @@ function M.display_right(contents)
         width = width,
         height = height,
     })
-    contents = M.pad(contents, { pad_top = 1 })
+    contents = pad(contents, { pad_top = 1 })
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, contents)
     return bufnr
 end
