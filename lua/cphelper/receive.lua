@@ -1,8 +1,8 @@
 local prepare = require("cphelper.prepare")
 local uv = vim.loop
 
-local function process(data)
-    local json = vim.fn.json_decode(data)
+local function process(buffer)
+    local json = vim.fn.json_decode(buffer)
     local problem_dir = prepare.prepare_folders(json.name, json.group)
     prepare.prepare_files(problem_dir, json.tests)
     print("All the best!")

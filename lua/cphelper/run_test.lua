@@ -1,6 +1,10 @@
 local h = require("cphelper.helpers")
 local M = {}
 
+-- Run a test case
+--- @param case number #Case no.
+--- @param cmd string #Command for running the test
+--- @return table, number #The result to display and whether or not the test passed
 function M.run_test(case, cmd)
     local case_no = string.sub(case, 6)
     local timeout = vim.g.cphtimeout or 2000

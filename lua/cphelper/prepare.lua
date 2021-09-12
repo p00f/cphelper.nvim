@@ -1,11 +1,15 @@
 local p = require("plenary.path")
 local h = require("cphelper.helpers")
 local defns = require("cphelper.definitions")
-local contests_dir = p.new(vim.g.cphdir or (vim.loop.os_homedir() .. p.path.sep .. "contests"))
 local preferred_lang = vim.g.cphlang or "cpp"
+local contests_dir = p.new(vim.g.cphdir or (vim.loop.os_homedir() .. p.path.sep .. "contests"))
 
 local M = {}
 
+-- Creates the folder for the problem: contests_dir/judge/contest/problem
+--- @param problem string #The name of the problem
+--- @param group string #"Group", in the format "Judge - Contest"
+--- @return Path #The problem dir (type: plenary Path)
 function M.prepare_folders(problem, group)
     local problem_dir
     if group == "UVa Online Judge" then
@@ -21,6 +25,9 @@ function M.prepare_folders(problem, group)
     return problem_dir
 end
 
+-- Creates the sample input, sample output and solution source code files for the problem
+--- @param problem_dir Path #The directory of the problem (type: plenary Path)
+--- @param tests table #List of { input = "foo", ouput = "bar" }
 function M.prepare_files(problem_dir, tests)
     for i, test in pairs(tests) do
         problem_dir:joinpath("input" .. i):write(test["input"], "w")

@@ -62,6 +62,8 @@ end
 
 local M = {}
 
+-- Compile and test
+--- @vararg number #Case numbers to test. If not provided, then all cases are tested
 function M.process(...)
     local args = { ... }
     local ft = f.detect(vim.api.nvim_buf_get_name(0))
@@ -83,6 +85,8 @@ function M.process(...)
     end
 end
 
+-- Retest without compiling
+--- @vararg number #Test case nos.
 function M.process_retests(...)
     local args = { ... }
     local ac, cases, results = iterate_cases(args)

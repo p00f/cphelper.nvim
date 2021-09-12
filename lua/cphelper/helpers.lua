@@ -1,5 +1,8 @@
 local M = {}
 
+-- Strips out special characters from a string
+--- @param s string #The string to sanitize
+--- @return string #The sanitized string
 function M.sanitize(s)
     local unwanted = { "-", " ", "#", "%.", ":", "'", "+", "%%" }
     for _, char in pairs(unwanted) do
@@ -15,6 +18,7 @@ end
 -- Compares two tables (list-like/map-like)
 --- @param t1 table #The first table
 --- @param t2 table #The second table
+--- @return boolean #True if both the tables are equal
 function M.comparetables(t1, t2)
     if #t1 ~= #t2 then
         return false
@@ -53,6 +57,9 @@ function M.pad(contents, opts)
     return contents
 end
 
+-- Display the results in a floating window on the right side
+--- @param contents table #List of lines to display
+--- @return number #bufnr of the created window
 function M.display_right(contents)
     local bufnr = vim.api.nvim_create_buf(false, true)
     local width = math.floor(vim.o.columns * 0.5)
