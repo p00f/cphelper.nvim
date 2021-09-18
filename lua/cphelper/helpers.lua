@@ -24,7 +24,7 @@ function M.comparetables(t1, t2)
         return false
     end
     for k, v in pairs(t1) do
-        if t2[k] ~= v then
+        if t2[k] ~= t1[k] then
             return false
         end
     end

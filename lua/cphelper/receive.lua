@@ -26,14 +26,17 @@ function M.receive()
             else
                 client:shutdown()
                 client:close()
+
                 local lines = {}
                 for line in string.gmatch(buffer, "[^\r\n]+") do
                     table.insert(lines, line)
                 end
                 buffer = lines[#lines]
+
                 vim.schedule(function()
                     process(buffer)
                 end)
+
                 M.server:shutdown()
             end
         end)

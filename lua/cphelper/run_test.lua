@@ -18,6 +18,8 @@ function M.run_test(case, cmd)
     vim.list_extend(result, exp_out_arr)
     local output_arr = {}
     local err_arr = {}
+
+    -- Run executable
     local job_id = vim.fn.jobstart(cmd, {
         on_stdout = function(_, data, _)
             vim.list_extend(output_arr, data)
@@ -27,6 +29,13 @@ function M.run_test(case, cmd)
             vim.list_extend(err_arr, data)
         end,
         on_exit = function(_, exit_code, _)
+            -- Strip CR on Windows
+            if vim.fn.has("win32") then
+                for k, v in pairs(output_arr) do
+                    output_arr[k] = string.gsub(v, "\r", "")
+                end
+            end
+
             if #output_arr ~= 0 then
                 vim.list_extend(result, { "Received output:" })
                 vim.list_extend(result, output_arr)
@@ -49,12 +58,17 @@ function M.run_test(case, cmd)
             end
         end,
     })
+
+    -- Send input
     vim.fn.chansend(job_id, vim.list_extend(vim.fn.readfile(case), { "" }))
+
+    -- Wait till `timeout`
     local len = vim.fn.jobwait({ job_id }, timeout)
     if len[1] == -1 then
         vim.list_extend(result, { string.format("Status: Timed out after %d ms", timeout) })
         vim.fn.jobstop(job_id)
     end
+
     return result, status
 end
 return M

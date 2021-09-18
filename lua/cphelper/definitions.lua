@@ -5,11 +5,11 @@ return {
         rust = "rustc solution.rs -o rust.out",
     },
     run_cmd = {
-        c = "./c.out",
-        cpp = "./cpp.out",
+        c = vim.fn.has("win32") == 1 and ".\\c.out" or "./c.out",
+        cpp = vim.fn.has("win32") == 1 and ".\\cpp.out" or "./cpp.out",
         lua = "lua solution.lua",
         python = "python solution.py",
-        rust = "./rust.out",
+        rust = vim.fn.has("win32") == 1 and ".\\rust.out" or "./rust.out",
     },
     extensions = {
         c = "c",
