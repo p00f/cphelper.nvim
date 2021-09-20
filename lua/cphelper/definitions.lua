@@ -1,3 +1,4 @@
+local sep = require("plenary.path").path.sep
 return {
     compile_cmd = {
         c = "gcc solution.c -o c.out",
@@ -5,11 +6,11 @@ return {
         rust = "rustc solution.rs -o rust.out",
     },
     run_cmd = {
-        c = vim.fn.has("win32") == 1 and ".\\c.out" or "./c.out",
-        cpp = vim.fn.has("win32") == 1 and ".\\cpp.out" or "./cpp.out",
+        c = [[.]] .. sep .. [[c.out]],
+        cpp = [[.]] .. sep .. [[cpp.out]],
         lua = "lua solution.lua",
         python = "python solution.py",
-        rust = vim.fn.has("win32") == 1 and ".\\rust.out" or "./rust.out",
+        rust = [[.]] .. sep .. [[rust.out]]
     },
     extensions = {
         c = "c",
