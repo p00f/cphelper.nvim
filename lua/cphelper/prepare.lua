@@ -8,7 +8,7 @@ local M = {}
 
 -- Creates the folder for the problem: contests_dir/judge/contest/problem
 --- @param problem string #The name of the problem
---- @param group string #"Group", in the format "Judge - Contest"
+--- @param group string #Group, in the format "Judge - Contest"
 --- @return Path #The problem dir (type: plenary Path)
 function M.prepare_folders(problem, group)
     local problem_dir

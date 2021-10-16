@@ -4,15 +4,16 @@ local M = {}
 --- @param s string #The string to sanitize
 --- @return string #The sanitized string
 function M.sanitize(s)
+    local copy = s
     local unwanted = { "-", " ", "#", "%.", ":", "'", "+", "%%" }
     for _, char in pairs(unwanted) do
-        local pos = string.find(s, char)
+        local pos = string.find(copy, char)
         while pos do
-            s = string.sub(s, 1, pos - 1) .. string.sub(s, pos + 1)
-            pos = string.find(s, char)
+            copy = string.sub(copy, 1, pos - 1) .. string.sub(copy, pos + 1)
+            pos = string.find(copy, char)
         end
     end
-    return s
+    return copy
 end
 
 -- Compares two tables (list-like/map-like)
