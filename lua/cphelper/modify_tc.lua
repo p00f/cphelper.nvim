@@ -1,4 +1,4 @@
-local p = require("plenary.path")
+local path = require("plenary.path")
 
 local M = {}
 
@@ -14,8 +14,8 @@ end
 function M.deletetc(...)
     local cases = { ... }
     for _, case in pairs(cases) do
-        p.new(vim.fn.getcwd() .. p.path.sep .. "input" .. case):rm()
-        p.new(vim.fn.getcwd() .. p.path.sep .. "output" .. case):rm()
+        path.new(vim.fn.getcwd() .. path.path.sep .. "input" .. case):rm()
+        path.new(vim.fn.getcwd() .. path.path.sep .. "output" .. case):rm()
     end
 end
 

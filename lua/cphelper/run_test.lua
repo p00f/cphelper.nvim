@@ -1,4 +1,4 @@
-local h = require("cphelper.helpers")
+local helpers = require("cphelper.helpers")
 local M = {}
 
 -- Run a test case
@@ -46,7 +46,7 @@ function M.run_test(case, cmd)
                 vim.list_extend(result, { "Exit code " .. exit_code })
             end
             if exit_code == 0 then
-                if h.comparetables(output_arr, exp_out_arr) then
+                if helpers.comparetables(output_arr, exp_out_arr) then
                     vim.list_extend(result, { "Status: AC" })
                     status = 1
                 else

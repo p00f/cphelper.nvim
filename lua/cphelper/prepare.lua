@@ -1,8 +1,10 @@
-local p = require("plenary.path")
-local h = require("cphelper.helpers")
-local defns = require("cphelper.definitions")
+local path = require("plenary.path")
+local helpers = require("cphelper.helpers")
+local def = require("cphelper.definitions")
 local preferred_lang = vim.g.cphlang or "cpp"
-local contests_dir = p.new(vim.g.cphdir or (vim.loop.os_homedir() .. p.path.sep .. "contests"))
+local contests_dir = path.new(
+    vim.g.cphdir or (vim.loop.os_homedir() .. path.path.sep .. "contests")
+)
 
 local M = {}
 
@@ -13,14 +15,14 @@ local M = {}
 function M.prepare_folders(problem, group)
     local problem_dir
     if group == "UVa Online Judge" then
-        problem_dir = contests_dir:joinpath("UVa", h.sanitize(problem))
+        problem_dir = contests_dir:joinpath("UVa", helpers.sanitize(problem))
     elseif group == "HDOJ" then
-        problem_dir = contests_dir:joinpath("HDOJ", h.sanitize(problem))
+        problem_dir = contests_dir:joinpath("HDOJ", helpers.sanitize(problem))
     else
         local sep_pos = string.find(group, "% %-")
-        local judge = h.sanitize(string.sub(group, 1, sep_pos))
-        local contest = h.sanitize(string.sub(group, sep_pos + 1))
-        problem = h.sanitize(problem)
+        local judge = helpers.sanitize(string.sub(group, 1, sep_pos))
+        local contest = helpers.sanitize(string.sub(group, sep_pos + 1))
+        problem = helpers.sanitize(problem)
         problem_dir = contests_dir:joinpath(judge, contest, problem)
     end
     problem_dir:mkdir({ exists_ok = true, parents = true })
@@ -36,7 +38,7 @@ function M.prepare_files(problem_dir, tests)
         problem_dir:joinpath("output" .. i):write(test["output"], "w")
     end
     print("Wrote tests")
-    local extension = defns["extensions"][preferred_lang]
+    local extension = def["extensions"][preferred_lang]
     problem_dir:joinpath("solution." .. extension):touch()
     print("Wrote solution files")
 

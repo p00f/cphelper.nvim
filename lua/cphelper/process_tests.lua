@@ -1,10 +1,10 @@
-local f = require("plenary.filetype")
+local filetype = require("plenary.filetype")
 local run = require("cphelper.run_test")
-local defs = require("cphelper.definitions")
+local def = require("cphelper.definitions")
 
 local function iterate_cases(args)
     local cwd = vim.fn.getcwd()
-    local ft = f.detect(vim.api.nvim_buf_get_name(0))
+    local ft = filetype.detect(vim.api.nvim_buf_get_name(0))
     local ac, cases = 0, 0
     local results = {}
     if #args == 0 then
@@ -14,7 +14,7 @@ local function iterate_cases(args)
         })) do
             local result, status = run.run_test(
                 string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
-                defs.run_cmd[ft]
+                def.run_cmd[ft]
             )
             vim.list_extend(results, result)
             ac = ac + status -- status is 1 on correct answer, 0 otherwise
@@ -22,7 +22,7 @@ local function iterate_cases(args)
         end
     else
         for _, case in ipairs(args) do
-            local result, status = run.run_test("input" .. case, defs.run_cmd[ft])
+            local result, status = run.run_test("input" .. case, def.run_cmd[ft])
             vim.list_extend(results, result)
             ac = ac + status
             cases = cases + 1
@@ -66,9 +66,9 @@ local M = {}
 --- @vararg number #Case numbers to test. If not provided, then all cases are tested
 function M.process(...)
     local args = { ... }
-    local ft = f.detect(vim.api.nvim_buf_get_name(0))
-    if defs.compile_cmd[ft] ~= nil then
-        vim.fn.jobstart((vim.g[ft .. "_compile_command"] or defs.compile_cmd[ft]), {
+    local ft = filetype.detect(vim.api.nvim_buf_get_name(0))
+    if def.compile_cmd[ft] ~= nil then
+        vim.fn.jobstart((vim.g[ft .. "_compile_command"] or def.compile_cmd[ft]), {
             on_exit = function(_, exit_code, _)
                 if exit_code == 0 then
                     local ac, cases, results = iterate_cases(args)
