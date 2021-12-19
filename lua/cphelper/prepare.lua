@@ -11,7 +11,7 @@ local M = {}
 -- Creates the folder for the problem: contests_dir/judge/contest/problem
 --- @param problem string #The name of the problem
 --- @param group string #Group, in the format "Judge - Contest"
---- @return Path #The problem dir (type: plenary Path)
+--- @return Path #The problem dir
 function M.prepare_folders(problem, group)
     local problem_dir
     if group == "UVa Online Judge" then
@@ -30,7 +30,7 @@ function M.prepare_folders(problem, group)
 end
 
 -- Creates the sample input, sample output and solution source code files for the problem
---- @param problem_dir Path #The directory of the problem (type: plenary Path)
+--- @param problem_dir Path #The directory of the problem
 --- @param tests table #List of { input = "foo", ouput = "bar" }
 function M.prepare_files(problem_dir, tests)
     for i, test in pairs(tests) do
@@ -43,7 +43,7 @@ function M.prepare_files(problem_dir, tests)
     print("Wrote solution files")
 
     if vim.g.cph_rust_createjson then
-        problem_dir:joinpath("rust-project.json"):write(vim.g.rustjson or ([[
+        problem_dir:joinpath("rust-project.json"):write(vim.g.cph_rustjson or ([[
 {
      "sysroot_src": "]] .. vim.loop.os_homedir() .. [[/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
      "crates": [
