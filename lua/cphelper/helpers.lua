@@ -32,8 +32,11 @@ function M.comparetables(t1, t2)
     return true
 end
 
--- Copied from neovim master.
--- Credits: Christian Clason and Hirokazu Hata
+--- Pads a list of lines with spaces
+--- Copied from neovim master.
+--- Credits: Christian Clason and Hirokazu Hata
+--- @param contents table
+--- @param opts table
 local function pad(contents, opts)
     vim.validate({
         contents = { contents, "t" },

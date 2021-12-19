@@ -2,12 +2,17 @@ local filetype = require("plenary.filetype")
 local run = require("cphelper.run_test")
 local def = require("cphelper.definitions")
 
-local function iterate_cases(args)
+--- Runs multiple test cases by calling `"cphelper.run_test".run_test()` on a binary
+---@param case_numbers table #List of case numbers
+---@return integer #Number of cases passed
+---@return integer #Total number of cases
+---@return table #Result to be displayed (list of lines)
+local function iterate_cases(case_numbers)
     local cwd = vim.fn.getcwd()
     local ft = filetype.detect(vim.api.nvim_buf_get_name(0))
     local ac, cases = 0, 0
     local results = {}
-    if #args == 0 then
+    if #case_numbers == 0 then
         for _, input_file in ipairs(require("plenary.scandir").scan_dir(cwd, {
             search_pattern = "input%d+",
             depth = 1,
@@ -21,7 +26,7 @@ local function iterate_cases(args)
             cases = cases + 1
         end
     else
-        for _, case in ipairs(args) do
+        for _, case in ipairs(case_numbers) do
             local result, status = run.run_test("input" .. case, def.run_cmd[ft])
             vim.list_extend(results, result)
             ac = ac + status
@@ -31,6 +36,10 @@ local function iterate_cases(args)
     return ac, cases, results
 end
 
+--- Displays results
+---@param ac number #No. of cases passed
+---@param cases number #Total no. of cases
+---@param results table #Result to be displayed (list of lines)
 local function display_results(ac, cases, results)
     local header = "   RESULTS: " .. ac .. "/" .. cases .. " AC"
     if ac == cases then
