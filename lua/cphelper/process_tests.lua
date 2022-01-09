@@ -11,42 +11,42 @@ local function iterate_cases(case_numbers)
     local cwd = vim.fn.getcwd()
     local ft = filetype.detect(vim.api.nvim_buf_get_name(0))
     local ac, cases = 0, 0
-    local results = {}
+    local display = {}
     if #case_numbers == 0 then
         for _, input_file in ipairs(require("plenary.scandir").scan_dir(cwd, {
             search_pattern = "input%d+",
             depth = 1,
         })) do
-            local result, status = run.run_test(
-                string.sub(input_file, string.len(cwd) - string.len(input_file) + 1),
+            local case_display, success = run.run_test(
+                string.sub(input_file, string.len(cwd) - string.len(input_file) + 6),
                 def.run_cmd[ft]
             )
-            vim.list_extend(results, result)
-            ac = ac + status -- status is 1 on correct answer, 0 otherwise
+            vim.list_extend(display, case_display)
+            ac = ac + success -- status is 1 on correct answer, 0 otherwise
             cases = cases + 1
         end
     else
         for _, case in ipairs(case_numbers) do
-            local result, status = run.run_test("input" .. case, def.run_cmd[ft])
-            vim.list_extend(results, result)
-            ac = ac + status
+            local case_display, success = run.run_test("input" .. case, def.run_cmd[ft])
+            vim.list_extend(display, case_display)
+            ac = ac + success
             cases = cases + 1
         end
     end
-    return ac, cases, results
+    return ac, cases, display
 end
 
 --- Displays results
 ---@param ac number #No. of cases passed
 ---@param cases number #Total no. of cases
----@param results table #Result to be displayed (list of lines)
-local function display_results(ac, cases, results)
+---@param display table #Result to be displayed (list of lines)
+local function display_results(ac, cases, display)
     local header = "   RESULTS: " .. ac .. "/" .. cases .. " AC"
     if ac == cases then
         header = header .. " 🎉🎉"
     end
     local contents = { "", header, "" }
-    for _, line in ipairs(results) do
+    for _, line in ipairs(display) do
         table.insert(contents, line)
     end
     local bufnr = require("cphelper.helpers").display_right(contents)
@@ -98,8 +98,8 @@ end
 --- @vararg number #Test case nos.
 function M.process_retests(...)
     local args = { ... }
-    local ac, cases, results = iterate_cases(args)
-    display_results(ac, cases, results)
+    local ac, cases, display = iterate_cases(args)
+    display_results(ac, cases, display)
 end
 
 return M
