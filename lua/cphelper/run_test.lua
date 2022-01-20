@@ -48,7 +48,7 @@ function M.run_test(case, cmd)
                 insert(display, "Exit code " .. exit_code)
             end
             if exit_code == 0 then
-                if helpers.comparetables(output_arr, exp_out_arr) then
+                if helpers.compare_str_lit(output_arr, exp_out_arr) then
                     insert(display, "Status: AC")
                     success = 1
                 else

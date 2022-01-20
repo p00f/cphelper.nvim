@@ -16,16 +16,23 @@ function M.sanitize(s)
     return copy
 end
 
--- Compares two tables (list-like/map-like)
+-- Compares two lists of strings
 --- @param t1 table #The first table
 --- @param t2 table #The second table
 --- @return boolean #True if both the tables are equal
-function M.comparetables(t1, t2)
+function M.compare_str_list(t1, t2)
+    local compare = function(str1, str2)
+        if vim.g.cph_ignore_trailing then
+            return str1:gsub("%s*$", "") == str2:gsub("%s*$", "")
+        else
+            return str1 == str2
+        end
+    end
     if #t1 ~= #t2 then
         return false
     end
     for k, _ in pairs(t1) do
-        if t2[k] ~= t1[k] then
+        if compare(t1[k], t2[k]) == false then
             return false
         end
     end
