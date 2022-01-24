@@ -17,8 +17,7 @@ A plugin for automating tasks in competitive programming like downloading test c
 The filetype of the floating window showing results is `Results`, so you can disable your indentline/cursorline plugins for this filetype.
 ## Demo video
 
-https://user-images.githubusercontent.com/36493671/117531842-39bc5880-b002-11eb-9e34-0b140bdf0065.mp4
-
+https://user-images.githubusercontent.com/36493671/150828502-88aa544c-8b48-42f4-b4e9-0d2be9a9c689.mp4
 
 ## Prefs
 - `g:cphdir` : The directory in which contests are stored (default `~/contests`) (Specify **absolute path**)
