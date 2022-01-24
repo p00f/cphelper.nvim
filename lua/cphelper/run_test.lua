@@ -59,6 +59,7 @@ function M.run_test(case, cmd)
                 insert(display, "Exit code " .. exit_code)
             end
         end,
+        data_buffered = true,
     })
 
     -- Send input
