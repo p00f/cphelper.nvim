@@ -27,9 +27,12 @@ function M.receive()
                 buffer = lines[#lines]
 
                 vim.schedule(function()
-                    local json = vim.json.decode(buffer)
-                    local problem_dir = prepare.prepare_folders(json.name, json.group)
-                    prepare.prepare_files(problem_dir, json.tests)
+                    local request = vim.json.decode(buffer)
+                    if vim.g.cph_url_register then
+                        vim.fn.setreg(vim.g.cph_url_register, request.url)
+                    end
+                    local problem_dir = prepare.prepare_folders(request.name, request.group)
+                    prepare.prepare_files(problem_dir, request.tests)
                     print("All the best!")
                 end)
 

@@ -22,6 +22,7 @@ https://user-images.githubusercontent.com/36493671/150828502-88aa544c-8b48-42f4-
 ## Prefs
 - `g:cphdir` : The directory in which contests are stored (default `~/contests`) (Specify **absolute path**)
 - `g:cphlang` : Preferred language for the first solution file opened. You can open another `solution.language` file for a particular problem using `:e` and that file will be used.
+- `g:cph_url_register` : The register to save the url of the problem in. (default `nil`)
 - `g:cphborder` : Border type used for the results window. Possible values: see `:help nvim_open_win()` (default `"rounded"`)
 - `g:rust_compile_command` : Command for compiling Rust files (default `rustc solution.rs -o rust.out`)
 - `g:c_compile_command` : Command for compiling C files (default `gcc solution.c -o c.out`). The input file must be `solution.c` and the output file must be `c.out`, this pref is  only for compile flags.
