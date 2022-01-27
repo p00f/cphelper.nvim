@@ -1,0 +1,153 @@
+*cphelper.txt* Competitive programming helper for neovim
+
+Author:  Chinmay Dalal
+Repo:    https://github.com/p00f/cphelper.nvim
+License: MIT
+
+
+INTRODUCTION                                                        *cphelper*
+
+A plugin for automating tasks in competitive programming like downloading test
+cases, compiling and testing. Supports Rust, C, C++, Java, Kotlin (JVM),
+Python and Lua.
+
+==============================================================================
+
+USAGE                                                         *cphelper-usage*
+
+
+                                                                 *:CphReceive*
+:CphReceive              Use `:CphReceive` and press the "parse task" button
+                         in the browser extension to prepare files. This
+                         will open an empty solution file in you preferred
+                         language.
+
+                                                                    *:CphTest*
+:CphTest [numbers]       To test your solution. If test case number(s) are
+                         specified, only those cases are run, otherwise all
+                         cases are run.
+
+                                                                  *:CphRetest*
+:CphRetest [nummbers]    To test the same binary without recompiling.
+
+                                                                    *:CphEdit*
+:CphEdit [number]        To edit/add a test case.
+
+                                                                  *:CphDelete*
+:CphDelete [numbers]     To delete test cases.
+
+==============================================================================
+
+CONFIGURATION                                         *cphelper-configuration*
+
+
+The filetype of the floating window showing results is `Results`, so for
+example you can disable your indentline/cursorline plugins for this filetype.
+
+The plugin itself is configured using global variables:
+
+`g:cphdir`                                                          *g:cphdir*
+            The directory in which contests are stored. Note: specify
+	    absolute path.
+	    Default: `~/contests`
+
+`g:cphlang`                                                        *g:cphlang*
+            Preferred language for the first solution file opened.
+	    (You can always open a `solution.language` file for a particular
+	    problem using `:e` and that file will be used.)
+	    Default: `cpp`
+
+`g:cphtimeout`                                                  *g:cphtimeout*
+            Time limit per test case in milliseconds
+	    Default: 2000
+
+`g:cph_ignore_trailing`                                *g:cph_ignore_trailing*
+            Whether to ignore trailing spaces when comparing received output
+	    to expected output.
+	    Default: `false`
+
+`g:cph_url_register`                                      *g:cph_url_register*
+            Register to save the url of the problem in.
+	    Default: `nil`
+
+`g:cphborder`                                                    *g:cphborder*
+            Border type used for the results window.
+	    Possible values: see |nvim-open-win()|
+	    Default: `rounded`
+
+`g:cpp_compile_command`                                *g:cpp_compile_command*
+            Command for compiling C++ files.
+	    Default: `g++ solution.cpp -o cpp.out`
+	    Note: The input file must be `solution.cpp` and the output file
+	    must be `cpp.out`
+
+
+`g:c_compile_command`                                    *g:c_compile_command*
+            Command for compiling C files.
+	    Default: `gcc solution.c -o c.out`
+	    Note: The input file must be `solution.c` and the output file
+	    must be `c.out`
+
+
+`g:rust_compile_command`                              *g:rust_compile_command*
+            Command for compiling Rust files.
+	    Default: `rustc solution.rs -o rust.out`
+	    Note: The input file must be `solution.rs` and the output file
+	    must be `rust.out`
+
+`g:cph_rustjson`                                              *g:cph_rustjson*
+            `rust-project.json` created for rust-analyzer. You likely need to
+	    change `sysroot_src` to match the output of
+	    `rustc --print sysroot`
+	    Default:
+>
+    {
+         "sysroot_src": "<home-directory>/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
+         "crates": [
+                 {
+                     "root_module": "solution.rs",
+                     "edition": "2018",        // BE SURE TO CHECK THE EDITION WITH THE ONLINE JUDGE, THEIR VERSION MIGHT BE OLD.
+                     "deps": []
+                }
+         ]
+    }
+
+==============================================================================
+
+DIRECTORY STRUCTURE                             *cphelper-directory-structure*
+
+Contests directory (g:cphdir)
+├── Judge 1
+│   ├── Contest 1
+│   │   ├── Problem 1
+│   │   │   ├── input1
+│   │   │   ├── input2
+│   │   │   ├── output1
+│   │   │   ├── output2
+│   │   │   ├── solution.c
+│   │   │   ├── solution.cpp
+│   │   │   └── solution.py
+│   │   └── Problem 2
+│   │       ├── input1
+│   │       ├── output1
+│   │       ├── solution.c
+│   │       ├── solution.cpp
+│   │       └── solution.py
+│   └── Contest 2
+│       └── Problem 1
+│           ├── input1
+│           ├── output1
+│           ├── solution.c
+│           ├── solution.cpp
+│           └── solution.py
+└── Judge 2
+    └── Contest 2
+        └── Problem 1
+            ├── input1
+            ├── output1
+            ├── solution.c
+            ├── solution.cpp
+            └── solution.py
+
+
+ vim:tw=78:ts=8:noet:ft=help:norl:
