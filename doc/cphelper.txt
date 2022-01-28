@@ -48,58 +48,58 @@ The plugin itself is configured using global variables:
 
 `g:cphdir`                                                          *g:cphdir*
             The directory in which contests are stored. Note: specify
-	    absolute path.
-	    Default: `~/contests`
+            absolute path.
+            Default: `~/contests`
 
 `g:cphlang`                                                        *g:cphlang*
             Preferred language for the first solution file opened.
-	    (You can always open a `solution.language` file for a particular
-	    problem using `:e` and that file will be used.)
-	    Default: `cpp`
+            (You can always open a `solution.language` file for a particular
+            problem using `:e` and that file will be used.)
+            Default: `cpp`
 
 `g:cphtimeout`                                                  *g:cphtimeout*
             Time limit per test case in milliseconds
-	    Default: 2000
+            Default: 2000
 
 `g:cph_ignore_trailing`                                *g:cph_ignore_trailing*
             Whether to ignore trailing spaces when comparing received output
-	    to expected output.
-	    Default: `false`
+            to expected output.
+            Default: `false`
 
 `g:cph_url_register`                                      *g:cph_url_register*
             Register to save the url of the problem in.
-	    Default: `nil`
+            Default: `nil`
 
 `g:cphborder`                                                    *g:cphborder*
             Border type used for the results window.
-	    Possible values: see |nvim_open_win()|
-	    Default: `rounded`
+            Possible values: see |nvim_open_win()|
+            Default: `rounded`
 
 `g:cpp_compile_command`                                *g:cpp_compile_command*
             Command for compiling C++ files.
-	    Default: `g++ solution.cpp -o cpp.out`
-	    Note: The input file must be `solution.cpp` and the output file
-	    must be `cpp.out`
+            Default: `g++ solution.cpp -o cpp.out`
+            Note: The input file must be `solution.cpp` and the output file
+            must be `cpp.out`
 
 
 `g:c_compile_command`                                    *g:c_compile_command*
             Command for compiling C files.
-	    Default: `gcc solution.c -o c.out`
-	    Note: The input file must be `solution.c` and the output file
-	    must be `c.out`
+            Default: `gcc solution.c -o c.out`
+            Note: The input file must be `solution.c` and the output file
+            must be `c.out`
 
 
 `g:rust_compile_command`                              *g:rust_compile_command*
             Command for compiling Rust files.
-	    Default: `rustc solution.rs -o rust.out`
-	    Note: The input file must be `solution.rs` and the output file
-	    must be `rust.out`
+            Default: `rustc solution.rs -o rust.out`
+            Note: The input file must be `solution.rs` and the output file
+            must be `rust.out`
 
 `g:cph_rustjson`                                              *g:cph_rustjson*
             `rust-project.json` created for rust-analyzer. You likely need to
-	    change `sysroot_src` to match the output of
-	    `rustc --print sysroot`
-	    Default:
+            change `sysroot_src` to match the output of
+            `rustc --print sysroot`
+            Default:
 >
     {
          "sysroot_src": "<home-directory>/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
@@ -111,6 +111,7 @@ The plugin itself is configured using global variables:
                 }
          ]
     }
+<
 
 ==============================================================================
 
