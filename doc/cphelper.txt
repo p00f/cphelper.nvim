@@ -96,13 +96,12 @@ The plugin itself is configured using global variables:
             must be `rust.out`
 
 `g:cph_rustjson`                                              *g:cph_rustjson*
-            `rust-project.json` created for rust-analyzer. You likely need to
-            change `sysroot_src` to match the output of
+            `rust-project.json` created for rust-analyzer.
             `rustc --print sysroot`
             Default:
 >
     {
-         "sysroot_src": "<home-directory>/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
+         "sysroot_src": "<output of `rustc --print sysroot`>/lib/rustlib/src/rust/library/",
          "crates": [
                  {
                      "root_module": "solution.rs",

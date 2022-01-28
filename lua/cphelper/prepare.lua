@@ -43,9 +43,10 @@ function M.prepare_files(problem_dir, tests)
     print("Wrote solution files")
 
     if vim.g.cph_rust_createjson then
+        local sysroot = vim.fn.system({ "rustc", "--print", "sysroot" })
         problem_dir:joinpath("rust-project.json"):write(vim.g.cph_rustjson or ([[
 {
-     "sysroot_src": "]] .. vim.loop.os_homedir() .. [[/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/",
+     "sysroot_src": "]] .. sysroot .. [[/lib/rustlib/src/rust/library/",
      "crates": [
              {
                  "root_module": "solution.rs",
