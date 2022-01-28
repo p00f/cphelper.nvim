@@ -97,7 +97,6 @@ The plugin itself is configured using global variables:
 
 `g:cph_rustjson`                                              *g:cph_rustjson*
             `rust-project.json` created for rust-analyzer.
-            `rustc --print sysroot`
             Default:
 >
     {
@@ -105,12 +104,13 @@ The plugin itself is configured using global variables:
          "crates": [
                  {
                      "root_module": "solution.rs",
-                     "edition": "2018",        // BE SURE TO CHECK THE EDITION WITH THE ONLINE JUDGE, THEIR VERSION MIGHT BE OLD.
+                     "edition": "2018",
                      "deps": []
                 }
          ]
     }
 <
+            Note: Be sure to check the edition with the online judge, their version might be old.
 
 ==============================================================================
 
