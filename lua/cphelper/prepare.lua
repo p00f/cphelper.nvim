@@ -34,13 +34,13 @@ end
 --- @param tests table #List of { input = "foo", ouput = "bar" }
 function M.prepare_files(problem_dir, tests)
     for i, test in pairs(tests) do
-        problem_dir:joinpath("input" .. i):write(test["input"], "w")
-        problem_dir:joinpath("output" .. i):write(test["output"], "w")
+        problem_dir:joinpath("input" .. i):write(test.input, "w")
+        problem_dir:joinpath("output" .. i):write(test.output, "w")
     end
-    print("Wrote tests")
-    local extension = def["extensions"][preferred_lang]
+    print("Wrote test(s)")
+    local extension = def.extensions[preferred_lang]
     problem_dir:joinpath("solution." .. extension):touch()
-    print("Wrote solution files")
+    print("Wrote solution file")
 
     if vim.g.cph_rust_createjson then
         local sysroot = vim.fn.system({ "rustc", "--print", "sysroot" })

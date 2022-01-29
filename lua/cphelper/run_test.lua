@@ -21,44 +21,51 @@ function M.run_test(case, cmd)
     local output_arr = {}
     local err_arr = {}
 
+    local function on_stdout(_, data, _)
+        extend(output_arr, data)
+        output_arr[#output_arr] = nil -- EOF is an empty string
+    end
+
+    local function on_stderr(_, data, _)
+        extend(err_arr, data)
+        err_arr[#err_arr] = nil
+    end
+
+    local function on_exit(_, exit_code, _)
+        -- Strip CR on Windows
+        if fn.has("win32") then
+            for k, v in pairs(output_arr) do
+                output_arr[k] = string.gsub(v, "\r", "")
+            end
+        end
+
+        if #output_arr ~= 0 then
+            insert(display, "Received output:")
+            extend(display, output_arr)
+        end
+        if #err_arr ~= 0 then
+            insert(display, "Error:")
+            extend(display, err_arr)
+            insert(display, "Exit code " .. exit_code)
+        end
+        if exit_code == 0 then
+            if helpers.compare_str_list(output_arr, exp_out_arr) then
+                insert(display, "Status: AC")
+                success = 1
+            else
+                insert(display, "Status: WA")
+            end
+        else
+            insert(display, "Status: RTE")
+            insert(display, "Exit code " .. exit_code)
+        end
+    end
+
     -- Run executable
     local job_id = fn.jobstart(cmd, {
-        on_stdout = function(_, data, _)
-            extend(output_arr, data)
-            output_arr[#output_arr] = nil -- EOF is an empty string
-        end,
-        on_stderr = function(_, data, _)
-            extend(err_arr, data)
-        end,
-        on_exit = function(_, exit_code, _)
-            -- Strip CR on Windows
-            if fn.has("win32") then
-                for k, v in pairs(output_arr) do
-                    output_arr[k] = string.gsub(v, "\r", "")
-                end
-            end
-
-            if #output_arr ~= 0 then
-                insert(display, "Received output:")
-                extend(display, output_arr)
-            end
-            if #err_arr ~= 1 then
-                insert(display, "Error:")
-                extend(display, err_arr)
-                insert(display, "Exit code " .. exit_code)
-            end
-            if exit_code == 0 then
-                if helpers.compare_str_list(output_arr, exp_out_arr) then
-                    insert(display, "Status: AC")
-                    success = 1
-                else
-                    insert(display, "Status: WA")
-                end
-            else
-                insert(display, "Status: RTE")
-                insert(display, "Exit code " .. exit_code)
-            end
-        end,
+        on_stdout = on_stdout,
+        on_stderr = on_stderr,
+        on_exit = on_exit,
         data_buffered = true,
     })
 
