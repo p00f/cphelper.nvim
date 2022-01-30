@@ -16,4 +16,4 @@ See `:h cphelper`.
 https://user-images.githubusercontent.com/36493671/151393463-8d01b2c4-3ea4-4e4c-b13a-fbfb398f2ce6.mp4
 
 ## Screenshot
-<img src="https://raw.githubusercontent.com/p00f/cphelper.nvim/main/screenshot.png" />
+<img src="https://user-images.githubusercontent.com/36493671/151689451-898e9a88-e07a-4faa-9691-1be322a15850.png" />
