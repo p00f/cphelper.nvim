@@ -24,6 +24,7 @@ function M.receive()
                 for line in string.gmatch(buffer, "[^\r\n]+") do
                     table.insert(lines, line)
                 end
+                -- Last line contains the actual request data, rest is headers and stuff
                 buffer = lines[#lines]
 
                 vim.schedule(function()
