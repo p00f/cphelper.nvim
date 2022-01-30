@@ -2,6 +2,7 @@
 
 Author:  Chinmay Dalal
 Repo:    https://github.com/p00f/cphelper.nvim
+         https://git.sr.ht/~p00f/cphelper.nvim
 License: MIT
 
 
