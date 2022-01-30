@@ -105,7 +105,7 @@ The plugin itself is configured using global variables:
          "crates": [
                  {
                      "root_module": "solution.rs",
-                     "edition": "2018",
+                     "edition": "2021",
                      "deps": []
                 }
          ]

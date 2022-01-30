@@ -51,7 +51,7 @@ function M.prepare_files(problem_dir, tests)
             crates = {
                 {
                     root_module = "solution.rs",
-                    edition = "2018",
+                    edition = "2021",
                     deps = {},
                 },
             },
