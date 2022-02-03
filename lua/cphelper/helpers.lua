@@ -19,24 +19,37 @@ end
 -- Compares two lists of strings
 --- @param t1 table #The first table
 --- @param t2 table #The second table
---- @return boolean #True if both the tables are equal
+--- @return string #
 function M.compare_str_list(t1, t2)
     local compare = function(str1, str2)
-        if vim.g.cph_ignore_trailing then
-            return str1:gsub("%s*$", "") == str2:gsub("%s*$", "")
+        if str1 == str2 then
+            return "yes"
+        elseif str1:gsub("%s*$", "") == str2:gsub("%s*$", "") then
+            return "trailing"
         else
-            return str1 == str2
+            return "no"
         end
     end
+
     if #t1 ~= #t2 then
-        return false
+        return "no"
     end
+
+    local trailing_match = false
     for k, _ in pairs(t1) do
-        if compare(t1[k], t2[k]) == false then
-            return false
+        local matches = compare(t1[k], t2[k])
+        if matches == "no" then
+            return "no"
+        elseif matches == "trailing" then
+            trailing_match = true
         end
     end
-    return true
+
+    if trailing_match then
+        return "trailing"
+    else
+        return "yes"
+    end
 end
 
 --- Pads a list of lines with spaces

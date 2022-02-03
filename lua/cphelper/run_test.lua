@@ -49,11 +49,15 @@ function M.run_test(case, cmd)
             insert(display, "Exit code " .. exit_code)
         end
         if exit_code == 0 then
-            if helpers.compare_str_list(output_arr, exp_out_arr) then
+            local matches = helpers.compare_str_list(output_arr, exp_out_arr)
+            if matches == "yes" then
                 insert(display, "Status: AC")
                 success = 1
             else
                 insert(display, "Status: WA")
+            end
+            if matches == "trailing" then
+                insert(display, "NOTE: Answer differs by trailing whitespace")
             end
         else
             insert(display, "Status: RTE")

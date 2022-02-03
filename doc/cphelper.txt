@@ -62,11 +62,6 @@ The plugin itself is configured using global variables:
             Time limit per test case in milliseconds
             Default: 2000
 
-`g:cph_ignore_trailing`                                *g:cph_ignore_trailing*
-            Whether to ignore trailing spaces when comparing received output
-            to expected output.
-            Default: `false`
-
 `g:cph_url_register`                                      *g:cph_url_register*
             Register to save the url of the problem in.
             Default: `nil`
