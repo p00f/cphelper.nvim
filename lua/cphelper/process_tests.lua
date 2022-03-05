@@ -27,7 +27,7 @@ local function iterate_cases(case_numbers)
         end
     else
         for _, case in ipairs(case_numbers) do
-            local case_display, success = run.run_test("input" .. case, def.run_cmd[ft])
+            local case_display, success = run.run_test(case, def.run_cmd[ft])
             vim.list_extend(display, case_display)
             ac = ac + success
             cases = cases + 1
