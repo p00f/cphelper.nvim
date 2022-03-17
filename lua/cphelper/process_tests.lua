@@ -13,10 +13,12 @@ local function iterate_cases(case_numbers)
     local ac, cases = 0, 0
     local display = {}
     if #case_numbers == 0 then
-        for _, input_file in ipairs(require("plenary.scandir").scan_dir(cwd, {
-            search_pattern = "input%d+",
-            depth = 1,
-        })) do
+        for _, input_file in
+            ipairs(require("plenary.scandir").scan_dir(cwd, {
+                search_pattern = "input%d+",
+                depth = 1,
+            }))
+        do
             local case_display, success = run.run_test(
                 string.sub(input_file, string.len(cwd) - string.len(input_file) + 6),
                 def.run_cmd[ft]
