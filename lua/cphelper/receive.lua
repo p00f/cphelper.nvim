@@ -20,12 +20,9 @@ function M.receive()
                 client:shutdown()
                 client:close()
 
-                local lines = {}
-                for line in string.gmatch(buffer, "[^\r\n]+") do
-                    table.insert(lines, line)
-                end
-                -- Last line contains the actual request data, rest is headers and stuff
-                buffer = lines[#lines]
+                -- HTTP - CRLF b/w headers and body
+                local idx = buffer:match("^.*()\r\n")
+                buffer = buffer:sub(idx + 1)
 
                 vim.schedule(function()
                     local request = vim.json.decode(buffer)
