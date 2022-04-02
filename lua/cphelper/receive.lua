@@ -35,6 +35,7 @@ function M.receive()
                 end)
 
                 M.server:shutdown()
+                M.server:close()
             end
         end)
     end)
