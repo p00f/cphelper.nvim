@@ -23,7 +23,9 @@ function M.run_test(case, cmd)
 
     local function on_stdout(_, data, _)
         extend(output_arr, data)
-        output_arr[#output_arr] = nil -- EOF is an empty string
+        if output_arr[#output_arr] == "" then
+            output_arr[#output_arr] = nil -- EOF is an empty string
+        end
     end
 
     local function on_stderr(_, data, _)
