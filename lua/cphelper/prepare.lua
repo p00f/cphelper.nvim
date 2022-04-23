@@ -39,8 +39,6 @@ function M.prepare_files(problem_dir, tests)
     end
     print("Wrote test(s)")
     local extension = def.extensions[preferred_lang]
-    problem_dir:joinpath("solution." .. extension):touch()
-    print("Wrote solution file")
 
     if vim.g.cph_rust_createjson then
         local sysroot = vim.fn.system({ "rustc", "--print", "sysroot" })
