@@ -14,6 +14,7 @@ return {
         python = "python solution.py",
         rust = [[.]] .. sep .. [[rust.out]],
         kotlin = "java -jar solution.jar",
+        javascript = "node solution.js",
     },
     extensions = {
         c = "c",
@@ -23,5 +24,6 @@ return {
         lua = "lua",
         rust = "rs",
         kotlin = "kt",
+        javascript = "js",
     },
 }
