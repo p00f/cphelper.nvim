@@ -2,9 +2,8 @@ local path = require("plenary.path")
 local helpers = require("cphelper.helpers")
 local def = require("cphelper.definitions")
 local preferred_lang = vim.g.cphlang or "cpp"
-local contests_dir = path.new(
-    vim.g.cphdir or (vim.loop.os_homedir() .. path.path.sep .. "contests")
-)
+local contests_dir =
+    path.new(vim.g.cphdir or (vim.loop.os_homedir() .. path.path.sep .. "contests"))
 
 local M = {}
 
@@ -14,10 +13,8 @@ local M = {}
 --- @return Path #The problem dir
 function M.prepare_folders(problem, group)
     local problem_dir
-    if group == "UVa Online Judge" then
-        problem_dir = contests_dir:joinpath("UVa", helpers.sanitize(problem))
-    elseif group == "HDOJ" then
-        problem_dir = contests_dir:joinpath("HDOJ", helpers.sanitize(problem))
+    if (group == "UVa Online Judge") or (group == "HDOJ") or (group == "DMOJ") then
+        problem_dir = contests_dir:joinpath(group, helpers.sanitize(problem))
     else
         local sep_pos = string.find(group, "% %-")
         local judge = helpers.sanitize(string.sub(group, 1, sep_pos))
@@ -41,9 +38,8 @@ function M.prepare_files(problem_dir, tests)
     local extension = def.extensions[preferred_lang]
 
     if vim.g.cph_rust_createjson then
-        local sysroot = vim.fn.system({ "rustc", "--print", "sysroot" })
-            :gsub("\n", "")
-            :gsub("\r", "")
+        local sysroot =
+            vim.fn.system({ "rustc", "--print", "sysroot" }):gsub("\n", ""):gsub("\r", "")
         problem_dir:joinpath("rust-project.json"):write(vim.g.cph_rustjson or (vim.json.encode({
             sysroot_src = sysroot .. "/lib/rustlib/src/rust/library/",
             crates = {
