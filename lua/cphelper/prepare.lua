@@ -13,7 +13,12 @@ local M = {}
 --- @return Path #The problem dir
 function M.prepare_folders(problem, group)
     local problem_dir
-    if (group == "UVa Online Judge") or (group == "HDOJ") or (group == "DMOJ") then
+    if
+        (group == "UVa Online Judge")
+        or (group == "HDOJ")
+        or (group == "DMOJ")
+        or (group == "Library Checker")
+    then
         problem_dir = contests_dir:joinpath(group, helpers.sanitize(problem))
     else
         local sep_pos = string.find(group, "% %-")
