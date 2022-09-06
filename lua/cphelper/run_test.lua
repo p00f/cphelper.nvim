@@ -5,7 +5,7 @@ local insert = table.insert
 local M = {}
 
 -- Run a test case
---- @param case number #Case no.
+--- @param case string #Case no.
 --- @param cmd string #Command for running the test
 --- @return table, number #The result to display and whether or not the test passed
 function M.run_test(case, cmd)
@@ -14,21 +14,33 @@ function M.run_test(case, cmd)
     local display = { "Case #" .. case }
     local input_arr = fn.readfile("input" .. case)
     local exp_out_arr = fn.readfile("output" .. case)
-    insert(display, "Input:")
+    insert(display, "  Input:")
+    for index, value in ipairs(input_arr) do
+        input_arr[index] = "  " .. value
+    end
     extend(display, input_arr)
-    insert(display, "Expected output:")
+    insert(display, "  Expected output:")
+    for index, value in ipairs(exp_out_arr) do
+        exp_out_arr[index] = "  " .. value
+    end
     extend(display, exp_out_arr)
     local output_arr = {}
     local err_arr = {}
 
     local function on_stdout(_, data, _)
+        for index, value in ipairs(data) do
+            data[index] = "  " .. value
+        end
         extend(output_arr, data)
-        if output_arr[#output_arr] == "" then
+        if output_arr[#output_arr] == "  " then
             output_arr[#output_arr] = nil -- EOF is an empty string
         end
     end
 
     local function on_stderr(_, data, _)
+        for index, value in ipairs(data) do
+            data[index] = "  " .. value
+        end
         extend(err_arr, data)
         err_arr[#err_arr] = nil
     end
@@ -42,28 +54,28 @@ function M.run_test(case, cmd)
         end
 
         if #output_arr ~= 0 then
-            insert(display, "Received output:")
+            insert(display, "  Received output:")
             extend(display, output_arr)
         end
         if #err_arr ~= 0 then
-            insert(display, "Error:")
+            insert(display, "  Error:")
             extend(display, err_arr)
-            insert(display, "Exit code " .. exit_code)
+            insert(display, "  Exit code " .. exit_code)
         end
         if exit_code == 0 then
             local matches = helpers.compare_str_list(output_arr, exp_out_arr)
             if matches == "yes" then
-                insert(display, "Status: AC")
+                insert(display, "  Status: AC")
                 success = 1
             else
-                insert(display, "Status: WA")
+                insert(display, "  Status: WA")
             end
             if matches == "trailing" then
-                insert(display, "NOTE: Answer differs by trailing whitespace")
+                insert(display, "  NOTE: Answer differs by trailing whitespace")
             end
         else
-            insert(display, "Status: RTE")
-            insert(display, "Exit code " .. exit_code)
+            insert(display, "  Status: RTE")
+            insert(display, "  Exit code " .. exit_code)
         end
     end
 
@@ -81,10 +93,10 @@ function M.run_test(case, cmd)
     -- Wait till `timeout`
     local len = fn.jobwait({ job_id }, timeout)
     if len[1] == -1 then
-        insert(display, string.format("Status: Timed out after %d ms", timeout))
+        insert(display, string.format("  Status: Timed out after %d ms", timeout))
         fn.jobstop(job_id)
     end
-
+    insert(display, "")
     return display, success
 end
 return M

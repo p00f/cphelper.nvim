@@ -1,4 +1,5 @@
 local M = {}
+local api = vim.api
 
 -- Strips out special characters from a string
 --- @param s string #The string to sanitize
@@ -85,20 +86,39 @@ end
 --- @param contents table #List of lines to display
 --- @return number #bufnr of the created window
 function M.display_right(contents)
-    local bufnr = vim.api.nvim_create_buf(false, true)
-    local width = math.floor(vim.o.columns * 0.5)
+    local bufnr = api.nvim_create_buf(false, true)
+    local width = 0
+    for _, value in pairs(contents) do
+        width = math.max(width, string.len(value))
+    end
+    width = width + 5
     local height = math.floor(vim.o.lines * 0.9)
-    vim.api.nvim_open_win(bufnr, true, {
-        border = vim.g.cphborder or "rounded",
-        style = "minimal",
-        relative = "editor",
-        row = math.floor(((vim.o.lines - height) / 2) - 1),
-        col = math.floor(vim.o.columns - width - 1),
-        width = width,
-        height = height,
-    })
+    if not vim.g.cph_vsplit then
+        api.nvim_open_win(bufnr, true, {
+            border = vim.g.cphborder or "rounded",
+            style = "minimal",
+            relative = "editor",
+            row = math.floor(((vim.o.lines - height) / 2) - 1),
+            col = math.floor(vim.o.columns - width - 1),
+            width = width,
+            height = height,
+        })
+    else
+        vim.cmd("vsplit")
+        api.nvim_win_set_buf(0, bufnr)
+        api.nvim_win_set_width(0, width)
+        api.nvim_win_set_option(0, "number", false)
+        api.nvim_win_set_option(0, "relativenumber", false)
+        api.nvim_win_set_option(0, "cursorline", false)
+        api.nvim_win_set_option(0, "cursorcolumn", false)
+        api.nvim_win_set_option(0, "spell", false)
+        api.nvim_win_set_option(0, "list", false)
+        api.nvim_win_set_option(0, "signcolumn", "auto")
+    end
     contents = pad(contents, { pad_top = 1 })
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, contents)
+    api.nvim_win_set_option(0, "foldmethod", "indent")
+    api.nvim_buf_set_lines(bufnr, 0, -1, true, contents)
+    api.nvim_buf_set_option(bufnr, "shiftwidth", 2)
     return bufnr
 end
 

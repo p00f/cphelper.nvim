@@ -45,7 +45,7 @@ CONFIGURATION                                         *cphelper-configuration*
 The filetype of the floating window showing results is `Results`, so for
 example you can disable your indentline/cursorline plugins for this filetype.
 
-The plugin itself is configured using global variables:
+The plugin is configured using global variables:
 
 `g:cphdir`                                                          *g:cphdir*
             The directory in which contests are stored. Note: specify
@@ -70,6 +70,9 @@ The plugin itself is configured using global variables:
             Border type used for the results window.
             Possible values: see |nvim_open_win()|
             Default: `rounded`
+`g:cph_vsplit`                                                  *g:cph_vsplit*
+            Whether to use a split or a floating window for the results.
+            Default: `false`
 
 `g:cpp_compile_command`                                *g:cpp_compile_command*
             Command for compiling C++ files.
