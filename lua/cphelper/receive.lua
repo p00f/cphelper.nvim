@@ -26,8 +26,8 @@ function M.receive()
 
                 vim.schedule(function()
                     local request = vim.json.decode(buffer)
-                    if vim.g.cph_url_register then
-                        vim.fn.setreg(vim.g.cph_url_register, request.url)
+                    if vim.g["cph#url_register"] then
+                        vim.fn.setreg(vim.g["cph#url_register"], request.url)
                     end
                     local problem_dir = prepare.prepare_folders(request.name, request.group)
                     prepare.prepare_files(problem_dir, request.tests)

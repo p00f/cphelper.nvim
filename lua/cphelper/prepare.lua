@@ -1,9 +1,9 @@
 local path = require("plenary.path")
 local helpers = require("cphelper.helpers")
 local def = require("cphelper.definitions")
-local preferred_lang = vim.g.cphlang or "cpp"
+local preferred_lang = vim.g["cph#lang"] or "cpp"
 local contests_dir =
-    path.new(vim.g.cphdir or (vim.loop.os_homedir() .. path.path.sep .. "contests"))
+    path.new(vim.g["cph#dir"] or (vim.loop.os_homedir() .. path.path.sep .. "contests"))
 
 local M = {}
 
@@ -42,10 +42,10 @@ function M.prepare_files(problem_dir, tests)
     print("Wrote test(s)")
     local extension = def.extensions[preferred_lang]
 
-    if vim.g.cph_rust_createjson then
+    if vim.g["cph#rust#createjson"] then
         local sysroot =
             vim.fn.system({ "rustc", "--print", "sysroot" }):gsub("\n", ""):gsub("\r", "")
-        problem_dir:joinpath("rust-project.json"):write(vim.g.cph_rustjson or (vim.json.encode({
+        problem_dir:joinpath("rust-project.json"):write(vim.g["cph#rust#json"] or (vim.json.encode({
             sysroot_src = sysroot .. "/lib/rustlib/src/rust/library/",
             crates = {
                 {

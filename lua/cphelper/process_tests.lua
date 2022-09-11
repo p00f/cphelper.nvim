@@ -79,7 +79,7 @@ function M.process(...)
     local args = { ... }
     local ft = filetype.detect(vim.api.nvim_buf_get_name(0))
     if def.compile_cmd[ft] ~= nil then
-        vim.fn.jobstart((vim.g[ft .. "_compile_command"] or def.compile_cmd[ft]), {
+        vim.fn.jobstart((vim.g["cph#" .. ft .. "#compile_command"] or def.compile_cmd[ft]), {
             on_exit = function(_, exit_code, _)
                 if exit_code == 0 then
                     local ac, cases, results = iterate_cases(args)

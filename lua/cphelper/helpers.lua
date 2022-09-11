@@ -93,9 +93,9 @@ function M.display_right(contents)
     end
     width = width + 5
     local height = math.floor(vim.o.lines * 0.9)
-    if not vim.g.cph_vsplit then
+    if not vim.g["cph#vsplit"] then
         api.nvim_open_win(bufnr, true, {
-            border = vim.g.cphborder or "rounded",
+            border = vim.g["cph#border"] or "rounded",
             style = "minimal",
             relative = "editor",
             row = math.floor(((vim.o.lines - height) / 2) - 1),

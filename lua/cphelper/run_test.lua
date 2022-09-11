@@ -9,7 +9,7 @@ local M = {}
 --- @param cmd string #Command for running the test
 --- @return table, number #The result to display and whether or not the test passed
 function M.run_test(case, cmd)
-    local timeout = vim.g.cphtimeout or 2000
+    local timeout = vim.g["cph#timeout"] or 2000
     local success = 0 -- status is 1 on correct answer, 0 otherwise
     local display = { "Case #" .. case }
     local input_arr = fn.readfile("input" .. case)
