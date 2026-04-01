@@ -4,8 +4,7 @@ local uv = vim.uv
 local M = {}
 
 ---@param client uv.uv_tcp_t
----@param server uv.uv_tcp_t
-local function on_connection(client, server)
+local function on_connection(client)
     local buffer = ""
     client:read_start(function(error, chunk)
         assert(not error, error)
@@ -28,9 +27,6 @@ local function on_connection(client, server)
                 prepare.prepare_files(problem_dir, request.tests)
                 print("All the best!")
             end)
-
-            server:shutdown()
-            server:close()
         end
     end)
 end
@@ -54,7 +50,7 @@ function M.receive()
         local client = uv.new_tcp()
         assert(client, "cphelper.nvim: could not create client")
         M.server:accept(client)
-        on_connection(client, M.server)
+        on_connection(client)
     end)
 end
 
