@@ -140,17 +140,23 @@ local M = {}
 function M.process(args)
     local ft = vim.filetype.match({ filename = vim.api.nvim_buf_get_name(0) })
     if def.compile_cmd[ft] ~= nil then
-        vim.system((vim.g["cph#" .. ft .. "#compile_command"] or def.compile_cmd[ft]), {}, function(out)
-            if out.stderr then
-                vim.schedule(function() vim.api.nvim_echo({ { out.stderr } }, true, { err = true }) end)
+        vim.system(
+            (vim.g["cph#" .. ft .. "#compile_command"] or def.compile_cmd[ft]),
+            {},
+            function(out)
+                if out.stderr then
+                    vim.schedule(function()
+                        vim.api.nvim_echo({ { out.stderr } }, true, { err = true })
+                    end)
+                end
+                if out.code == 0 then
+                    vim.schedule(function()
+                        local ac, cases, results = iterate_cases(args)
+                        display_results(ac, cases, results)
+                    end)
+                end
             end
-            if out.code == 0 then
-                vim.schedule(function()
-                    local ac, cases, results = iterate_cases(args)
-                    display_results(ac, cases, results)
-                end)
-            end
-        end)
+        )
     else
         M.process_retests(args)
     end

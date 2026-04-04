@@ -68,7 +68,9 @@ function M.run_test(case, cmd)
     local err_arr = {}
 
     local function on_stdout(_err, data)
-        if not data then return end
+        if not data then
+            return
+        end
         local lines = vim.split(data, "\n")
         for _, line in ipairs(lines) do
             extend(output_arr, { "  " .. line })
@@ -79,7 +81,9 @@ function M.run_test(case, cmd)
     end
 
     local function on_stderr(_err, data)
-        if not data then return end
+        if not data then
+            return
+        end
         local lines = vim.split(data, "\n")
         for _, line in ipairs(lines) do
             extend(err_arr, { "  " .. line })
@@ -106,7 +110,10 @@ function M.run_test(case, cmd)
         end
         if out.code == 0 then
             local matches = compare_str_list(output_arr, exp_out_arr)
-            if matches == "yes" or (matches == "trailing" and vim.g["cph#ignore_trailing_differences"]) then
+            if
+                matches == "yes"
+                or (matches == "trailing" and vim.g["cph#ignore_trailing_differences"])
+            then
                 insert(display, "  Status: AC")
                 success = 1
             else

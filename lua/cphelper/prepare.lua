@@ -66,16 +66,22 @@ function M.prepare_files(problem_dir, tests)
     if vim.g["cph#rust#createjson"] then
         local sysroot =
             vim.fn.system({ "rustc", "--print", "sysroot" }):gsub("\n", ""):gsub("\r", "")
-        write_file(vim.fs.joinpath(problem_dir, "rust-project.json"), vim.g["cph#rust#json"] or (vim.json.encode({
-            sysroot_src = sysroot .. "/lib/rustlib/src/rust/library/",
-            crates = {
-                {
-                    root_module = "solution.rs",
-                    edition = "2021",
-                    deps = {},
-                },
-            },
-        })))
+        write_file(
+            vim.fs.joinpath(problem_dir, "rust-project.json"),
+            vim.g["cph#rust#json"]
+                or (
+                    vim.json.encode({
+                        sysroot_src = sysroot .. "/lib/rustlib/src/rust/library/",
+                        crates = {
+                            {
+                                root_module = "solution.rs",
+                                edition = "2021",
+                                deps = {},
+                            },
+                        },
+                    })
+                )
+        )
         print("Wrote rust-project.json")
     end
 

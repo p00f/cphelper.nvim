@@ -52,7 +52,10 @@ nvim_create_user_command("Cph", function(args)
         vim.cmd.lcd({ "%:p:h", mods = { silent = true } })
         require("cphelper.modify_tc").deletetc(rest)
     else
-        vim.notify("cphelper.nvim: unknown subcommand: " .. tostring(subcommand), vim.log.levels.ERROR)
+        vim.notify(
+            "cphelper.nvim: unknown subcommand: " .. tostring(subcommand),
+            vim.log.levels.ERROR
+        )
     end
 end, {
     nargs = "+",

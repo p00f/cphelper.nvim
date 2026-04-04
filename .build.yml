@@ -1,12 +1,13 @@
 image: nixos/unstable
 packages:
-  - nixos.curl
-  - nixos.emmylua-check
   - nixos.neovim
   - nixos.jq
 sources:
   - https://git.sr.ht/~chinmay/cphelper.nvim
 tasks:
+  - format: |
+      cd cphelper.nvim
+      nix develop --extra-experimental-features "nix-command flakes" -c stylua --check .
   - lint: |
       cd cphelper.nvim
       nvim_runtime="$(nvim --clean --headless -c 'echo $VIMRUNTIME' -c 'q' 2>&1)/lua/"
